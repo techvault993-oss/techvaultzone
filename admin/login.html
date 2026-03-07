@@ -25,26 +25,14 @@
             padding: 1rem;
         }
         
-        .login-container {
-            width: 100%;
-            max-width: 450px;
-            perspective: 1000px;
-        }
-        
         .login-box {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
             animation: slideUp 0.5s ease;
-            border: 2px solid rgba(255,255,255,0.2);
-            transform-style: preserve-3d;
-            transition: transform 0.3s;
-        }
-        
-        .login-box:hover {
-            transform: translateY(-5px) rotateX(2deg);
         }
         
         .logo {
@@ -53,29 +41,14 @@
         }
         
         .logo i {
-            font-size: 4rem;
+            font-size: 3rem;
             color: #0066FF;
-            filter: drop-shadow(0 10px 20px rgba(0,102,255,0.3));
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
         }
         
         .logo h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-top: 0.5rem;
-            background: linear-gradient(135deg, #0066FF, #00C3FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .logo p {
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+            color: #333;
         }
         
         .form-group {
@@ -85,309 +58,130 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 600;
-            font-size: 0.9rem;
+            color: #555;
+            font-weight: 500;
         }
         
         .form-group input {
             width: 100%;
-            padding: 0.9rem 1rem;
+            padding: 0.75rem 1rem;
             border: 2px solid #e1e1e1;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 1rem;
             transition: all 0.3s;
-            background: white;
         }
         
         .form-group input:focus {
             outline: none;
             border-color: #0066FF;
-            box-shadow: 0 0 0 4px rgba(0,102,255,0.1);
-        }
-        
-        .secret-question {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #0066FF;
-        }
-        
-        .secret-question h3 {
-            color: #333;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-        
-        .question-item {
-            margin-bottom: 1rem;
-        }
-        
-        .question-item label {
-            display: block;
-            margin-bottom: 0.3rem;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .security-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #28a745;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-bottom: 1rem;
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
         }
         
         .btn {
             width: 100%;
-            padding: 1rem;
+            padding: 0.875rem;
             background: linear-gradient(135deg, #0066FF, #00C3FF);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
         }
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(0,102,255,0.4);
+            box-shadow: 0 10px 20px rgba(0,102,255,0.3);
         }
         
         .error {
             color: #dc3545;
             text-align: center;
             margin-top: 1rem;
-            font-size: 0.9rem;
-            padding: 0.5rem;
-            background: #f8d7da;
-            border-radius: 5px;
-            display: none;
+            font-size: 0.875rem;
         }
         
-        .security-footer {
+        .info {
             margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: #666;
             text-align: center;
-            font-size: 0.8rem;
-            color: #999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .security-footer i {
-            color: #28a745;
         }
         
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
-        .device-fingerprint {
-            display: none;
-        }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-box">
-            <div class="logo">
-                <i class="fas fa-shield-alt"></i>
-                <h1>Secure Admin Access</h1>
-                <p>Multi-layer authentication</p>
+    <div class="login-box">
+        <div class="logo">
+            <i class="fas fa-microchip"></i>
+            <h1>TechVaultZone Admin</h1>
+            <p style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">Enter your credentials</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username" required>
             </div>
-            
-            <div class="security-badge">
-                <i class="fas fa-check-circle"></i>
-                <span>Level 3 Security Active</span>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" required>
             </div>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label><i class="fas fa-user-secret"></i> Admin Username</label>
-                    <input type="text" id="username" placeholder="Enter username" value="admin" required>
-                </div>
-                
-                <div class="secret-question">
-                    <h3><i class="fas fa-question-circle"></i> Security Questions (Only you know these)</h3>
-                    
-                    <div class="question-item">
-                        <label>Question 1: What was your first pet's name?</label>
-                        <input type="text" id="petName" placeholder="Enter answer" value="pakistan" required>
-                    </div>
-                    
-                    <div class="question-item">
-                        <label>Question 2: What is your mother's maiden name?</label>
-                        <input type="text" id="maidenName" placeholder="Enter answer" value="pakistan" required>
-                    </div>
-                    
-                    <div class="question-item">
-                        <label>Question 3: What city were you born in?</label>
-                        <input type="text" id="birthCity" placeholder="Enter answer" value="pakistan" required>
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn" id="loginBtn">
-                    <i class="fas fa-lock"></i> Verify & Login
-                </button>
-                
-                <div id="error" class="error"></div>
-            </form>
-            
-            <div class="security-footer">
-                <i class="fas fa-shield-alt"></i>
-                <span>End-to-end encrypted • 256-bit security</span>
-            </div>
+            <button type="submit" class="btn">Login to Dashboard</button>
+            <div id="errorMessage" class="error"></div>
+        </form>
+        
+        <div class="info">
+            <p><strong>Default Login:</strong></p>
+            <p>Username: <strong>admin</strong></p>
+            <p>Password: <strong>TechVault@2024</strong></p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #999;">Change password after first login</p>
         </div>
     </div>
-    
+
     <script>
-        // ============================================
-        // ULTRA SECURE ADMIN AUTHENTICATION
-        // YOUR ANSWERS ARE SET TO: pakistan
-        // ============================================
-        
-        // YOUR SECRET ANSWERS - ALL SET TO "pakistan"
-        const SECRETS = {
-            username: 'admin',           // Admin username
-            petName: 'pakistan',          // Your first pet's name
-            maidenName: 'pakistan',        // Your mother's maiden name  
-            birthCity: 'pakistan',          // Your birth city
-            
-            // Device fingerprinting
-            get deviceFingerprint() {
-                return this.generateFingerprint();
-            },
-            
-            generateFingerprint() {
-                const screen = `${screen.width}x${screen.height}`;
-                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                const language = navigator.language;
-                return btoa(screen + timezone + language).substring(0, 20);
-            }
-        };
-        
-        // Track login attempts
-        let attempts = 0;
-        let lockUntil = 0;
-        
-        // Generate device fingerprint
-        const deviceId = SECRETS.generateFingerprint();
-        console.log('Device registered:', deviceId.substring(0, 10) + '...');
-        
+        // Simple login script - NO FINGERPRINTING
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const errorDiv = document.getElementById('error');
-            const now = Date.now();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
             
-            // Check if account is locked
-            if (now < lockUntil) {
-                const waitSeconds = Math.ceil((lockUntil - now) / 1000);
-                errorDiv.style.display = 'block';
-                errorDiv.textContent = `Too many attempts. Try again in ${waitSeconds} seconds.`;
-                return;
-            }
+            // Clear previous errors
+            errorDiv.textContent = '';
             
-            // Get user input (convert to lowercase for case-insensitive matching)
-            const username = document.getElementById('username').value.toLowerCase().trim();
-            const petName = document.getElementById('petName').value.toLowerCase().trim();
-            const maidenName = document.getElementById('maidenName').value.toLowerCase().trim();
-            const birthCity = document.getElementById('birthCity').value.toLowerCase().trim();
-            
-            // VERIFY ANSWERS - ALL SHOULD BE "pakistan"
-            const isValid = 
-                username === SECRETS.username &&
-                petName === SECRETS.petName &&
-                maidenName === SECRETS.maidenName &&
-                birthCity === SECRETS.birthCity;
-            
-            if (isValid) {
-                // Success - store encrypted session
-                const sessionToken = btoa(JSON.stringify({
-                    user: username,
-                    device: deviceId,
-                    time: Date.now(),
-                    valid: true
-                }));
+            // Simple hardcoded check (for demo)
+            if (username === 'admin' && password === 'TechVault@2024') {
+                // Store login state
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                sessionStorage.setItem('adminUser', username);
                 
-                sessionStorage.setItem('adminSecure', sessionToken);
-                localStorage.setItem('adminDevice', deviceId);
-                
-                // Reset attempts
-                attempts = 0;
-                
-                // Redirect to dashboard
-                window.location.href = 'dashboard.html';
-                
+                // Redirect to admin dashboard
+                window.location.href = 'index.html';
             } else {
-                // Failed attempt
-                attempts++;
-                errorDiv.style.display = 'block';
-                
-                // Show what they entered (for debugging - remove in production)
-                console.log('Failed attempt:', {username, petName, maidenName, birthCity});
-                
-                // Progressive lockout
-                if (attempts >= 5) {
-                    lockUntil = Date.now() + (30 * 60 * 1000); // Lock 30 minutes
-                    errorDiv.textContent = 'ACCOUNT LOCKED! Too many failed attempts. Try again in 30 minutes.';
-                } else if (attempts >= 3) {
-                    lockUntil = Date.now() + (5 * 60 * 1000); // Lock 5 minutes
-                    errorDiv.textContent = `Too many attempts. Locked for 5 minutes. (Attempt ${attempts}/5)`;
-                } else {
-                    errorDiv.textContent = `Invalid credentials. Attempt ${attempts}/5`;
-                }
+                errorDiv.textContent = 'Invalid username or password';
             }
         });
         
-        // Additional security - prevent brute force
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if this device is authorized
-            const lastDevice = localStorage.getItem('adminDevice');
-            if (lastDevice && lastDevice !== deviceId) {
-                console.warn('⚠️ Unauthorized device detected!');
-                // You can add email notification here
-            }
-            
-            // Auto-focus first field
-            document.getElementById('username').focus();
-        });
+        // Check if already logged in
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            window.location.href = 'index.html';
+        }
     </script>
 </body>
 </html>
