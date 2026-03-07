@@ -17,7 +17,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0066FF, #00C3FF);
+            background: linear-gradient(135deg, #0A0A0A, #0066FF);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -25,14 +25,18 @@
             padding: 1rem;
         }
         
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+        }
+        
         .login-box {
             background: white;
             padding: 2.5rem;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 400px;
             animation: slideUp 0.5s ease;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .logo {
@@ -43,12 +47,58 @@
         .logo i {
             font-size: 3rem;
             color: #0066FF;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         
         .logo h1 {
             font-size: 1.5rem;
             margin-top: 0.5rem;
             color: #333;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            background: #ddd;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .step-dot.active {
+            background: #0066FF;
+            transform: scale(1.3);
         }
         
         .form-group {
@@ -88,6 +138,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            margin-top: 1rem;
         }
         
         .btn:hover {
@@ -95,92 +146,294 @@
             box-shadow: 0 10px 20px rgba(0,102,255,0.3);
         }
         
+        .btn-secondary {
+            background: #6c757d;
+            margin-top: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
         .error {
             color: #dc3545;
             text-align: center;
             margin-top: 1rem;
             font-size: 0.875rem;
+            padding: 0.5rem;
+            background: #f8d7da;
+            border-radius: 5px;
+            display: none;
         }
         
-        .info {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
+        .error.show {
+            display: block;
+        }
+        
+        .success {
+            color: #28a745;
+            text-align: center;
+            margin-top: 1rem;
             font-size: 0.875rem;
-            color: #666;
+        }
+        
+        .attempts {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: #999;
+        }
+        
+        .warning {
+            color: #856404;
+            background: #fff3cd;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
             text-align: center;
         }
         
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="login-box">
-        <div class="logo">
-            <i class="fas fa-microchip"></i>
-            <h1>TechVaultZone Admin</h1>
-            <p style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">Enter your credentials</p>
-        </div>
-        
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Enter username" required>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>TechVaultZone Admin</h1>
+                <p>Secure Access Portal</p>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter password" required>
+            
+            <div class="step-indicator">
+                <div class="step-dot active" id="step1Dot"></div>
+                <div class="step-dot" id="step2Dot"></div>
+                <div class="step-dot" id="step3Dot"></div>
             </div>
-            <button type="submit" class="btn">Login to Dashboard</button>
-            <div id="errorMessage" class="error"></div>
-        </form>
-        
-        <div class="info">
-            <p><strong>Default Login:</strong></p>
-            <p>Username: <strong>admin</strong></p>
-            <p>Password: <strong>TechVault@2024</strong></p>
-            <p style="margin-top: 0.5rem; font-size: 0.75rem; color: #999;">Change password after first login</p>
+            
+            <!-- STEP 1: Username & Password -->
+            <div class="step active" id="step1">
+                <div class="warning">
+                    <i class="fas fa-lock"></i> Authorized Personnel Only
+                </div>
+                
+                <form id="step1Form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Enter username" autofocus>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter password">
+                    </div>
+                    
+                    <button type="submit" class="btn">Continue <i class="fas fa-arrow-right"></i></button>
+                </form>
+            </div>
+            
+            <!-- STEP 2: Security Question 1 -->
+            <div class="step" id="step2">
+                <div class="form-group">
+                    <label>Question 1: What is your hometown in Pakistan?</label>
+                    <input type="text" id="answer1" placeholder="Your answer">
+                </div>
+                
+                <button class="btn" onclick="checkAnswer1()">Continue <i class="fas fa-arrow-right"></i></button>
+                <button class="btn btn-secondary" onclick="goToStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+            
+            <!-- STEP 3: Security Question 2 -->
+            <div class="step" id="step3">
+                <div class="form-group">
+                    <label>Question 2: What was your first phone model?</label>
+                    <input type="text" id="answer2" placeholder="Your answer">
+                </div>
+                
+                <button class="btn" onclick="checkAnswer2()">Continue <i class="fas fa-arrow-right"></i></button>
+                <button class="btn btn-secondary" onclick="goToStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+            
+            <!-- STEP 4: Security Question 3 -->
+            <div class="step" id="step4">
+                <div class="form-group">
+                    <label>Question 3: What is your favorite Pakistani food?</label>
+                    <input type="text" id="answer3" placeholder="Your answer">
+                </div>
+                
+                <button class="btn" onclick="checkAnswer3()">Login <i class="fas fa-sign-in-alt"></i></button>
+                <button class="btn btn-secondary" onclick="goToStep(3)"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+            
+            <div class="error" id="errorMessage"></div>
+            <div class="attempts" id="attemptCount">Attempts remaining: 5</div>
         </div>
     </div>
 
     <script>
-        // Simple login script - NO FINGERPRINTING
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // ============================================
+        // ULTRA SECURE ADMIN LOGIN
+        // ALL ANSWERS = "pakistan" (lowercase)
+        // ============================================
+        
+        // Security configuration - ONLY YOU KNOW THIS
+        const SECRETS = {
+            username: 'admin',
+            password: 'pakistan',
+            answer1: 'pakistan',
+            answer2: 'pakistan', 
+            answer3: 'pakistan'
+        };
+        
+        // Security state
+        let currentStep = 1;
+        let attempts = 5;
+        let lockedUntil = null;
+        
+        // Check if locked
+        function isLocked() {
+            if (lockedUntil && new Date() < lockedUntil) {
+                const waitTime = Math.ceil((lockedUntil - new Date()) / 1000);
+                showError(`Too many attempts. Locked for ${waitTime} seconds.`);
+                return true;
+            }
+            return false;
+        }
+        
+        // Handle failed attempt
+        function failedAttempt() {
+            attempts--;
+            document.getElementById('attemptCount').textContent = `Attempts remaining: ${attempts}`;
+            
+            if (attempts <= 0) {
+                lockedUntil = new Date(Date.now() + 15 * 60 * 1000); // Lock for 15 minutes
+                showError('Too many failed attempts. Locked for 15 minutes.');
+                disableAllInputs();
+            }
+        }
+        
+        // Reset attempts on successful login
+        function resetAttempts() {
+            attempts = 5;
+            lockedUntil = null;
+            document.getElementById('attemptCount').textContent = `Attempts remaining: ${attempts}`;
+        }
+        
+        // Show error
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+            
+            setTimeout(() => {
+                errorEl.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Go to specific step
+        function goToStep(step) {
+            if (isLocked()) return;
+            
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            document.querySelectorAll('.step-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index < step);
+            });
+            
+            currentStep = step;
+        }
+        
+        // Step 1: Check username and password
+        document.getElementById('step1Form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('errorMessage');
+            if (isLocked()) return;
             
-            // Clear previous errors
-            errorDiv.textContent = '';
+            const username = document.getElementById('username').value.toLowerCase().trim();
+            const password = document.getElementById('password').value.toLowerCase().trim();
             
-            // Simple hardcoded check (for demo)
-            if (username === 'admin' && password === 'TechVault@2024') {
-                // Store login state
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                sessionStorage.setItem('adminUser', username);
-                
-                // Redirect to admin dashboard
-                window.location.href = 'index.html';
+            if (username === SECRETS.username && password === SECRETS.password) {
+                goToStep(2);
+                document.getElementById('step2Dot').classList.add('active');
             } else {
-                errorDiv.textContent = 'Invalid username or password';
+                failedAttempt();
+                showError('Invalid username or password');
             }
         });
         
+        // Step 2: Check answer 1
+        function checkAnswer1() {
+            if (isLocked()) return;
+            
+            const answer = document.getElementById('answer1').value.toLowerCase().trim();
+            
+            if (answer === SECRETS.answer1) {
+                goToStep(3);
+                document.getElementById('step3Dot').classList.add('active');
+            } else {
+                failedAttempt();
+                showError('Incorrect answer');
+            }
+        }
+        
+        // Step 3: Check answer 2
+        function checkAnswer2() {
+            if (isLocked()) return;
+            
+            const answer = document.getElementById('answer2').value.toLowerCase().trim();
+            
+            if (answer === SECRETS.answer2) {
+                goToStep(4);
+                document.getElementById('step4Dot').classList.add('active');
+            } else {
+                failedAttempt();
+                showError('Incorrect answer');
+            }
+        }
+        
+        // Step 4: Check answer 3 and login
+        function checkAnswer3() {
+            if (isLocked()) return;
+            
+            const answer = document.getElementById('answer3').value.toLowerCase().trim();
+            
+            if (answer === SECRETS.answer3) {
+                // Success! All answers correct
+                resetAttempts();
+                
+                // Create secure session
+                const sessionToken = btoa(Date.now() + 'admin' + Math.random());
+                sessionStorage.setItem('adminToken', sessionToken);
+                sessionStorage.setItem('adminLoginTime', Date.now());
+                
+                // Redirect to admin panel
+                window.location.href = 'index.html';
+            } else {
+                failedAttempt();
+                showError('Incorrect answer');
+            }
+        }
+        
+        // Disable all inputs when locked
+        function disableAllInputs() {
+            document.querySelectorAll('input, button').forEach(el => {
+                el.disabled = true;
+            });
+        }
+        
         // Check if already logged in
-        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-            window.location.href = 'index.html';
+        if (sessionStorage.getItem('adminToken')) {
+            const loginTime = sessionStorage.getItem('adminLoginTime');
+            if (loginTime && (Date.now() - loginTime < 30 * 60 * 1000)) { // 30 minute session
+                window.location.href = 'index.html';
+            } else {
+                sessionStorage.removeItem('adminToken');
+                sessionStorage.removeItem('adminLoginTime');
+            }
         }
     </script>
 </body>
