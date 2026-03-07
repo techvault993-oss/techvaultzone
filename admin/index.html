@@ -1,1 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TechVaultZone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: #0066FF;
+            font-size: 1.5rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        
+        .container {
+            display: flex;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 2rem 0;
+            position: fixed;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+        
+        .sidebar a {
+            display: block;
+            padding: 1rem 2rem;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .sidebar a i {
+            width: 20px;
+            margin-right: 0.5rem;
+        }
+        
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #0066FF;
+            color: white;
+        }
+        
+        .main {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            margin-bottom: 2rem;
+            color: #333;
+            font-size: 2rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #0066FF, #00C3FF);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .stat-info h3 {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-info .number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .card-header h2 {
+            font-size: 1.25rem;
+            color: #333;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #0066FF, #00C3FF);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,102,255,0.3);
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            text-align: left;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .product-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            margin-right: 0.25rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0066FF;
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
+        }
+        
+        .image-upload-area {
+            border: 2px dashed #0066FF;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        
+        .image-upload-area:hover {
+            background: #e9ecef;
+            border-color: #00C3FF;
+        }
+        
+        .image-upload-area i {
+            font-size: 3rem;
+            color: #0066FF;
+            margin-bottom: 1rem;
+        }
+        
+        .image-upload-area p {
+            color: #666;
+        }
+        
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .image-preview.show {
+            display: block;
+        }
+        
+        .or-divider {
+            text-align: center;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: #ddd;
+        }
+        
+        .or-divider::before {
+            left: 0;
+        }
+        
+        .or-divider::after {
+            right: 0;
+        }
+        
+        .or-divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #666;
+            font-size: 0.875rem;
+        }
+        
+        .amazon-info {
+            background: #232f3e;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .amazon-info strong {
+            color: #ff9900;
+        }
+        
+        .session-warning {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffc107;
+            color: #333;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 2000;
+        }
+        
+        .session-warning.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-microchip"></i>
+            <span>TechVaultZone Admin</span>
+        </div>
+        <div class="user-info">
+            <span><i class="fas fa-user-shield"></i> Admin</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="sidebar">
+            <a onclick="showSection('dashboard')" class="active"><i class="fas fa-chart-pie"></i> Dashboard</a>
+            <a onclick="showSection('products')"><i class="fas fa-box"></i> Products</a>
+            <a onclick="showSection('add-product')"><i class="fas fa-plus-circle"></i> Add Product</a>
+            <a onclick="showSection('security')"><i class="fas fa-shield-alt"></i> Security</a>
+        </div>
+        
+        <div class="main">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section active">
+                <h1>Dashboard</h1>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-box"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Products</h3>
+                            <div class="number" id="totalProducts">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-tags"></i></div>
+                        <div class="stat-info">
+                            <h3>Categories</h3>
+                            <div class="number">6</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fab fa-amazon"></i></div>
+                        <div class="stat-info">
+                            <h3>Store ID</h3>
+                            <div class="number">techvaultzone-20</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Recent Products</h2>
+                        <button class="btn" onclick="showSection('add-product')">Add New</button>
+                    </div>
+                    <table id="recentProductsTable">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentProductsList">
+                            <tr>
+                                <td colspan="4" style="text-align: center;">No products yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Products Section -->
+            <div id="products-section" class="section">
+                <h1>Manage Products</h1>
+                
+                <div class="card">
+                    <table id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Amazon ID</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsList">
+                            <tr>
+                                <td colspan="6" style="text-align: center;">No products yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Add Product Section -->
+            <div id="add-product-section" class="section">
+                <h1>Add New Product</h1>
+                
+                <div class="card">
+                    <div class="amazon-info">
+                        <p><i class="fab fa-amazon"></i> <strong>Your Amazon Store ID:</strong> techvaultzone-20</p>
+                        <p style="font-size: 0.875rem; margin-top: 0.5rem;">Use Amazon Product ID (e.g., B0CHWV2WYK) or upload your own image</p>
+                    </div>
+                    
+                    <form id="productForm" onsubmit="saveProduct(event)">
+                        <div class="form-group">
+                            <label for="title">Product Title *</label>
+                            <input type="text" id="title" required placeholder="e.g., iPhone 15 Pro Max">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <select id="category" required>
+                                <option value="">Select Category</option>
+                                <option value="smartphones">Smartphones</option>
+                                <option value="laptops">Laptops</option>
+                                <option value="headphones">Headphones</option>
+                                <option value="cameras">Cameras</option>
+                                <option value="smart-home">Smart Home</option>
+                                <option value="gaming">Gaming</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Description *</label>
+                            <textarea id="description" rows="4" required placeholder="Product description..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="price">Price ($) *</label>
+                            <input type="number" id="price" step="0.01" required placeholder="999.99">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="salePrice">Sale Price ($) (Optional)</label>
+                            <input type="number" id="salePrice" step="0.01" placeholder="899.99">
+                        </div>
+                        
+                        <!-- IMAGE UPLOAD SECTION -->
+                        <div class="form-group">
+                            <label>Product Image</label>
+                            
+                            <!-- Option 1: Upload Image -->
+                            <div class="image-upload-area" onclick="document.getElementById('imageUpload').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload image from computer</p>
+                                <p style="font-size: 0.75rem; color: #999;">PNG, JPG up to 5MB</p>
+                            </div>
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                            <img id="imagePreview" class="image-preview" alt="Preview">
+                            
+                            <div class="or-divider">
+                                <span>OR</span>
+                            </div>
+                            
+                            <!-- Option 2: Amazon Image URL -->
+                            <label for="imageUrl">Amazon Image URL</label>
+                            <input type="url" id="imageUrl" placeholder="https://images.amazon.com/...">
+                            <p style="font-size: 0.75rem; color: #666; margin-top: 0.25rem;">Paste Amazon product image URL</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="amazonId">Amazon Product ID *</label>
+                            <input type="text" id="amazonId" required placeholder="e.g., B0CHWV2WYK">
+                            <p style="font-size: 0.75rem; color: #666; margin-top: 0.25rem;">From Amazon URL: amazon.com/dp/B0CHWV2WYK</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="badge">Badge (Optional)</label>
+                            <input type="text" id="badge" placeholder="Best Seller, New, Sale">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="rating">Rating (0-5)</label>
+                            <input type="number" id="rating" step="0.1" min="0" max="5" value="4.5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Features (One per line)</label>
+                            <textarea id="features" rows="4" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Save Product</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Security Section -->
+            <div id="security-section" class="section">
+                <h1>Security Settings</h1>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Login History</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date/Time</th>
+                                <th>IP Address</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loginHistory">
+                            <tr>
+                                <td colspan="3" style="text-align: center;">No login history</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Session Management</h2>
+                    </div>
+                    <p>Your session expires in: <span id="sessionTimer">30:00</span></p>
+                    <button class="btn btn-success" onclick="extendSession()">Extend Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="session-warning" id="sessionWarning">
+        <i class="fas fa-clock"></i> Your session will expire in 5 minutes
+    </div>
 
+    <script>
+        // ============================================
+        // SECURITY CHECK - VERIFY SESSION
+        // ============================================
+        (function() {
+            const token = sessionStorage.getItem('adminToken');
+            const loginTime = sessionStorage.getItem('adminLoginTime');
+            
+            if (!token || !loginTime) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Check if session expired (30 minutes)
+            const elapsed = Date.now() - parseInt(loginTime);
+            if (elapsed > 30 * 60 * 1000) {
+                sessionStorage.clear();
+                window.location.href = 'login.html';
+                return;
+            }
+        })();
+        
+        // ============================================
+        // SESSION MANAGEMENT
+        // ============================================
+        let products = JSON.parse(localStorage.getItem('products') || '[]');
+        
+        // Session timer
+        let sessionTimer = setInterval(() => {
+            const loginTime = parseInt(sessionStorage.getItem('adminLoginTime'));
+            const elapsed = Date.now() - loginTime;
+            const remaining = 30 * 60 * 1000 - elapsed;
+            
+            if (remaining <= 0) {
+                clearInterval(sessionTimer);
+                logout();
+            } else {
+                const minutes = Math.floor(remaining / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+                const timerEl = document.getElementById('sessionTimer');
+                if (timerEl) {
+                    timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                // Show warning at 5 minutes
+                if (remaining <= 5 * 60 * 1000 && remaining > 4 * 60 * 1000) {
+                    document.getElementById('sessionWarning').classList.add('show');
+                } else {
+                    document.getElementById('sessionWarning').classList.remove('show');
+                }
+            }
+        }, 1000);
+        
+        // Extend session
+        function extendSession() {
+            sessionStorage.setItem('adminLoginTime', Date.now());
+        }
+        
+        // ============================================
+        // PRODUCT MANAGEMENT
+        // ============================================
+        
+        // Show different sections
+        function showSection(section) {
+            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
+            document.querySelector(`.sidebar a[onclick="showSection('${section}')"]`).classList.add('active');
+            document.getElementById(section + '-section').classList.add('active');
+            
+            if (section === 'dashboard') updateDashboard();
+            if (section === 'products') displayProducts();
+        }
+        
+        // Update dashboard stats
+        function updateDashboard() {
+            document.getElementById('totalProducts').textContent = products.length;
+            
+            const recentList = document.getElementById('recentProductsList');
+            if (products.length === 0) {
+                recentList.innerHTML = '<tr><td colspan="4" style="text-align: center;">No products yet</td></tr>';
+                return;
+            }
+            
+            const recent = products.slice(0, 5);
+            recentList.innerHTML = recent.map(p => `
+                <tr>
+                    <td><img src="${p.image}" class="product-image" onerror="this.src='https://via.placeholder.com/50'"></td>
+                    <td>${p.title}</td>
+                    <td>$${p.price}</td>
+                    <td>
+                        <button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // Display all products
+        function displayProducts() {
+            const list = document.getElementById('productsList');
+            if (products.length === 0) {
+                list.innerHTML = '<tr><td colspan="6" style="text-align: center;">No products yet</td></tr>';
+                return;
+            }
+            
+            list.innerHTML = products.map(p => `
+                <tr>
+                    <td><img src="${p.image}" class="product-image" onerror="this.src='https://via.placeholder.com/50'"></td>
+                    <td>${p.title}</td>
+                    <td>${p.category}</td>
+                    <td>$${p.price}</td>
+                    <td>${p.amazonId}</td>
+                    <td>
+                        <button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // Preview uploaded image
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.add('show');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        // Save product
+        function saveProduct(e) {
+            e.preventDefault();
+            
+            // Get image (uploaded or URL)
+            let imageUrl = document.getElementById('imageUrl').value;
+            const uploadedFile = document.getElementById('imageUpload').files[0];
+            
+            if (uploadedFile) {
+                // Convert uploaded file to base64 for storage
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    saveProductWithImage(e.target.result);
+                };
+                reader.readAsDataURL(uploadedFile);
+                return;
+            }
+            
+            saveProductWithImage(imageUrl);
+        }
+        
+        function saveProductWithImage(image) {
+            const features = document.getElementById('features').value.split('\n').filter(f => f.trim());
+            
+            const product = {
+                id: Date.now(),
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                price: parseFloat(document.getElementById('price').value),
+                salePrice: document.getElementById('salePrice').value || null,
+                image: image || 'https://via.placeholder.com/300',
+                amazonId: document.getElementById('amazonId').value,
+                badge: document.getElementById('badge').value || null,
+                rating: parseFloat(document.getElementById('rating').value),
+                features: features,
+                amazonLink: `https://www.amazon.com/dp/${document.getElementById('amazonId').value}/?tag=techvaultzone-20`
+            };
+            
+            products.push(product);
+            localStorage.setItem('products', JSON.stringify(products));
+            
+            alert('Product saved successfully!');
+            document.getElementById('productForm').reset();
+            document.getElementById('imagePreview').classList.remove('show');
+            showSection('products');
+            displayProducts();
+            updateDashboard();
+        }
+        
+        // Delete product
+        function deleteProduct(id) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('products', JSON.stringify(products));
+                displayProducts();
+                updateDashboard();
+            }
+        }
+        
+        // Logout
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'login.html';
+        }
+        
+        // Initialize
+        updateDashboard();
+    </script>
+</body>
+</html>
