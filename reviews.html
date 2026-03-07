@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Reviews - TechVault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo"><i class="fas fa-microchip"></i><span>TechVault</span></a>
+                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="categories.html">Categories</a>
+                    <a href="deals.html">Deals</a>
+                    <a href="reviews.html">Reviews</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="admin/login.html" class="admin-link"><i class="fas fa-cog"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Expert <span class="gradient-text">Reviews</span></h1>
+            <p>In-depth analysis of the latest tech</p>
+        </div>
+    </section>
+
+    <section class="featured-products">
+        <div class="container">
+            <div class="products-grid" id="reviewsGrid"></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo"><i class="fas fa-microchip"></i><span>TechVault</span></div>
+                    <p>Your trusted source for honest tech reviews.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="category.html?slug=smartphones">Smartphones</a></li>
+                        <li><a href="category.html?slug=laptops">Laptops</a></li>
+                        <li><a href="category.html?slug=headphones">Headphones</a></li>
+                        <li><a href="category.html?slug=cameras">Cameras</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> support@techvault.com</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TechVault. As an Amazon Associate, we earn from qualifying purchases.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script>
+        async function loadReviews() {
+            try {
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .order('rating', { ascending: false })
+                    .limit(12);
+                
+                const grid = document.getElementById('reviewsGrid');
+                
+                if (error || !data || data.length === 0) {
+                    grid.innerHTML = sampleReviews.map(p => `
+                        <div class="product-card">
+                            <img src="${p.image_url}" class="product-image">
+                            <div class="product-content">
+                                <h3 class="product-title">${p.title}</h3>
+                                <div class="product-rating">
+                                    <div class="stars">${generateStars(p.rating)}</div>
+                                    <span class="rating-count">(${p.review_count})</span>
+                                </div>
+                                <p class="product-description">${p.description}</p>
+                                <a href="product.html?slug=${p.slug}" class="btn-view">Read Review</a>
+                            </div>
+                        </div>
+                    `).join('');
+                    return;
+                }
+                
+                grid.innerHTML = data.map(p => `
+                    <div class="product-card">
+                        <img src="${p.image_url}" class="product-image">
+                        <div class="product-content">
+                            <h3 class="product-title">${p.title}</h3>
+                            <div class="product-rating">
+                                <div class="stars">${generateStars(p.rating)}</div>
+                                <span class="rating-count">(${p.review_count})</span>
+                            </div>
+                            <p class="product-description">${p.description?.substring(0, 100)}...</p>
+                            <a href="product.html?slug=${p.slug}" class="btn-view">Read Review</a>
+                        </div>
+                    </div>
+                `).join();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        function generateStars(rating) {
+            const full = Math.floor(rating);
+            const half = rating % 1 >= 0.5;
+            let stars = '';
+            for (let i = 0; i < full; i++) stars += '<i class="fas fa-star"></i>';
+            if (half) stars += '<i class="fas fa-star-half-alt"></i>';
+            for (let i = 0; i < 5 - full - (half ? 1 : 0); i++) stars += '<i class="far fa-star"></i>';
+            return stars;
+        }
+        
+        const sampleReviews = [
+            { slug: 'iphone-15-pro-max', title: 'iPhone 15 Pro Max', rating: 4.8, review_count: 1250, description: 'The ultimate iPhone with A17 Pro chip and titanium design.', image_url: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500' },
+            { slug: 'sony-wh-1000xm5', title: 'Sony WH-1000XM5', rating: 4.9, review_count: 3200, description: 'Industry-leading noise cancellation with exceptional sound.', image_url: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500' }
+        ];
+        
+        document.addEventListener('DOMContentLoaded', loadReviews);
+    </script>
+</body>
+</html>

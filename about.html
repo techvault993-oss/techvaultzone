@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - TechVaultZone</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .about-section {
+            padding: 4rem 0;
+        }
+        .mission-section {
+            background: var(--primary-light);
+            padding: 4rem 0;
+            text-align: center;
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .value-card {
+            text-align: center;
+            padding: 2rem;
+        }
+        .value-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 768px) {
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo">
+                    <img src="images/logo.png" alt="TechVaultZone Logo" style="height: 40px;">
+                    <span>TechVaultZone</span>
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="categories.html">Categories</a>
+                    <a href="deals.html">Deals</a>
+                    <a href="reviews.html">Reviews</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" onclick="handleThemeClick(event)">
+                    <i class="fas fa-moon"></i>
+                    <span class="secret-dot"></span>
+                </button>
+                <a href="admin/login.html" class="admin-link">
+                    <i class="fas fa-cog"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>About <span class="gradient-text">TechVaultZone</span></h1>
+            <p>Your trusted partner in technology</p>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <h2>Meet <span class="gradient-text">Abdul Malik Lakho</span></h2>
+                    <p class="founder-title">Founder & Tech Lead</p>
+                    <p>With over a decade of experience in the technology industry, Abdul Malik Lakho founded TechVaultZone with a simple mission: to cut through the marketing hype and provide honest, unbiased tech reviews that actually help people make informed decisions.</p>
+                    <p>What started as a personal blog in 2024 has grown into a trusted platform serving thousands of tech enthusiasts monthly. Abdul's passion for technology and commitment to transparency has made TechVaultZone a go-to source for reliable tech information.</p>
+                    <p>When not reviewing the latest gadgets, Abdul can be found experimenting with new tech, reading about industry trends, or mentoring aspiring tech reviewers.</p>
+                </div>
+                <div class="about-image">
+                    <img src="images/founder.jpg" alt="Abdul Malik Lakho" onerror="this.src='https://via.placeholder.com/400x500?text=Founder'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mission-section">
+        <div class="container">
+            <div class="mission-content">
+                <h2>Our <span class="gradient-text">Mission</span></h2>
+                <p>To empower consumers with honest, accurate, and comprehensive technology reviews, helping them make confident purchasing decisions in an increasingly complex digital world.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our <span class="gradient-text">Values</span></h2>
+                <p>What drives us every day</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>Honesty</h3>
+                    <p>We never compromise on truth. Every review is 100% unbiased and transparent.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-search"></i>
+                    <h3>Thoroughness</h3>
+                    <p>We test products extensively in real-world conditions, not just spec sheets.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community</h3>
+                    <p>We listen to our readers and review what matters most to you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="images/logo.png" alt="TechVaultZone" style="height: 30px;">
+                        <span>TechVaultZone</span>
+                    </div>
+                    <p>Your trusted source for honest tech reviews.</p>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@TechVautZone" target="_blank" class="youtube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/techv_ault/?hl=en" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61585092247422" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.pinterest.com/techvaultzone" target="_blank" class="pinterest"><i class="fab fa-pinterest"></i></a>
+                        <a href="https://www.tiktok.com/@techvaultzone" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="category.html?slug=smartphones">Smartphones</a></li>
+                        <li><a href="category.html?slug=laptops">Laptops</a></li>
+                        <li><a href="category.html?slug=headphones">Headphones</a></li>
+                        <li><a href="category.html?slug=cameras">Cameras</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> techvault993@gmail.com</li>
+                        <li><i class="fas fa-globe"></i> techvaultzone.netlify.app</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TechVaultZone. All rights reserved.</p>
+                <p class="amazon-disclosure">As an Amazon Associate, I earn from qualifying purchases. (Store ID: techvaultzone-20)</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Deals - TechVault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo"><i class="fas fa-microchip"></i><span>TechVault</span></a>
+                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="categories.html">Categories</a>
+                    <a href="deals.html">Deals</a>
+                    <a href="reviews.html">Reviews</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="admin/login.html" class="admin-link"><i class="fas fa-cog"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Best <span class="gradient-text">Deals</span></h1>
+            <p>Save big on the latest tech</p>
+        </div>
+    </section>
+
+    <section class="featured-products">
+        <div class="container">
+            <div class="products-grid" id="dealsGrid"></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo"><i class="fas fa-microchip"></i><span>TechVault</span></div>
+                    <p>Your trusted source for honest tech reviews.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="category.html?slug=smartphones">Smartphones</a></li>
+                        <li><a href="category.html?slug=laptops">Laptops</a></li>
+                        <li><a href="category.html?slug=headphones">Headphones</a></li>
+                        <li><a href="category.html?slug=cameras">Cameras</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> support@techvault.com</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TechVault. As an Amazon Associate, we earn from qualifying purchases.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script>
+        async function loadDeals() {
+            try {
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .not('sale_price', 'is', null)
+                    .limit(12);
+                
+                const grid = document.getElementById('dealsGrid');
+                
+                if (error || !data || data.length === 0) {
+                    grid.innerHTML = sampleDeals.map(p => `
+                        <div class="product-card">
+                            <span class="product-badge">Sale</span>
+                            <img src="${p.image_url}" class="product-image">
+                            <div class="product-content">
+                                <h3 class="product-title">${p.title}</h3>
+                                <div class="product-price">
+                                    <span class="current-price">$${p.sale_price}</span>
+                                    <span class="old-price">$${p.price}</span>
+                                </div>
+                                <a href="product.html?slug=${p.slug}" class="btn-view">View Deal</a>
+                            </div>
+                        </div>
+                    `).join('');
+                    return;
+                }
+                
+                grid.innerHTML = data.map(p => `
+                    <div class="product-card">
+                        <span class="product-badge">${p.badge || 'Sale'}</span>
+                        <img src="${p.image_url}" class="product-image">
+                        <div class="product-content">
+                            <h3 class="product-title">${p.title}</h3>
+                            <div class="product-price">
+                                <span class="current-price">$${p.sale_price}</span>
+                                <span class="old-price">$${p.price}</span>
+                            </div>
+                            <a href="product.html?slug=${p.slug}" class="btn-view">View Deal</a>
+                        </div>
+                    </div>
+                `).join();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        const sampleDeals = [
+            { slug: 'iphone-15-pro-max', title: 'iPhone 15 Pro Max', price: 1199.99, sale_price: 1099.99, image_url: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500' },
+            { slug: 'sony-wh-1000xm5', title: 'Sony WH-1000XM5', price: 399.99, sale_price: 349.99, image_url: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500' },
+            { slug: 'macbook-pro-16', title: 'MacBook Pro 16"', price: 3499.99, sale_price: 3299.99, image_url: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500' }
+        ];
+        
+        document.addEventListener('DOMContentLoaded', loadDeals);
+    </script>
+</body>
+</html>

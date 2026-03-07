@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - TechVault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .product-detail {
+            padding: 4rem 0;
+        }
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .product-image img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+        }
+        .product-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .product-price {
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+        .old-price {
+            font-size: 1.25rem;
+            color: var(--gray-400);
+            text-decoration: line-through;
+            margin-left: 1rem;
+        }
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .stars {
+            color: #FFB800;
+            font-size: 1.25rem;
+        }
+        .product-description {
+            margin: 2rem 0;
+            line-height: 1.8;
+            color: var(--gray-600);
+        }
+        .product-features {
+            margin: 2rem 0;
+        }
+        .product-features h3 {
+            margin-bottom: 1rem;
+        }
+        .product-features ul {
+            list-style: none;
+        }
+        .product-features li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .product-features i {
+            color: var(--primary);
+        }
+        .buy-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: #FF9900;
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1.25rem;
+            transition: var(--transition);
+        }
+        .buy-button:hover {
+            background: #E68900;
+            transform: translateY(-2px);
+        }
+        .not-found {
+            text-align: center;
+            padding: 4rem;
+            font-size: 1.5rem;
+            color: var(--gray-600);
+        }
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo"><i class="fas fa-microchip"></i><span>TechVault</span></a>
+                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="categories.html">Categories</a>
+                    <a href="deals.html">Deals</a>
+                    <a href="reviews.html">Reviews</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="admin/login.html" class="admin-link"><i class="fas fa-cog"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="product-detail">
+        <div class="container">
+            <div id="productContainer" class="product-container">
+                <!-- Product will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo"><i class="fas fa-microchip"></i><span>TechVault</span></div>
+                    <p>Your trusted source for honest tech reviews.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="category.html?slug=smartphones">Smartphones</a></li>
+                        <li><a href="category.html?slug=laptops">Laptops</a></li>
+                        <li><a href="category.html?slug=headphones">Headphones</a></li>
+                        <li><a href="category.html?slug=cameras">Cameras</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> support@techvault.com</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TechVault. As an Amazon Associate, we earn from qualifying purchases.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+
+        async function loadProduct() {
+            const container = document.getElementById('productContainer');
+            
+            if (!slug) {
+                container.innerHTML = '<div class="not-found">No product specified</div>';
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .eq('slug', slug)
+                    .single();
+
+                if (error || !data) {
+                    const sample = sampleProducts.find(p => p.slug === slug);
+                    if (sample) {
+                        displayProduct(sample);
+                    } else {
+                        container.innerHTML = '<div class="not-found">Product not found</div>';
+                    }
+                    return;
+                }
+
+                displayProduct(data);
+            } catch (error) {
+                console.error('Error:', error);
+                container.innerHTML = '<div class="not-found">Error loading product</div>';
+            }
+        }
+
+        function displayProduct(p) {
+            const container = document.getElementById('productContainer');
+            const stars = generateStars(p.rating || 0);
+            
+            container.innerHTML = `
+                <div class="product-image">
+                    <img src="${p.image_url}" alt="${p.title}">
+                </div>
+                <div class="product-info">
+                    <h1>${p.title}</h1>
+                    <div class="product-price">
+                        $${(p.sale_price || p.price).toFixed(2)}
+                        ${p.sale_price ? `<span class="old-price">$${p.price.toFixed(2)}</span>` : ''}
+                    </div>
+                    <div class="product-rating">
+                        <div class="stars">${stars}</div>
+                        <span>${p.rating || 0} (${p.review_count || 0} reviews)</span>
+                    </div>
+                    <div class="product-description">
+                        <p>${p.description || 'No description available.'}</p>
+                    </div>
+                    ${p.features ? `
+                        <div class="product-features">
+                            <h3>Key Features</h3>
+                            <ul>
+                                ${p.features.map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    <a href="${p.amazon_link || '#'}" target="_blank" class="buy-button">
+                        <i class="fab fa-amazon"></i> Buy on Amazon
+                    </a>
+                </div>
+            `;
+        }
+
+        function generateStars(rating) {
+            const full = Math.floor(rating);
+            const half = rating % 1 >= 0.5;
+            let stars = '';
+            for (let i = 0; i < full; i++) stars += '<i class="fas fa-star"></i>';
+            if (half) stars += '<i class="fas fa-star-half-alt"></i>';
+            for (let i = 0; i < 5 - full - (half ? 1 : 0); i++) stars += '<i class="far fa-star"></i>';
+            return stars;
+        }
+
+        const sampleProducts = [
+            { slug: 'iphone-15-pro-max', title: 'iPhone 15 Pro Max', price: 1199.99, sale_price: 1099.99, image_url: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500', rating: 4.8, review_count: 1250, description: 'The ultimate iPhone with A17 Pro chip, titanium design, and pro camera system.', features: ['A17 Pro chip', 'Titanium design', '48MP main camera', 'USB-C 3'], amazon_link: '#' },
+            { slug: 'sony-wh-1000xm5', title: 'Sony WH-1000XM5', price: 399.99, sale_price: 349.99, image_url: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500', rating: 4.9, review_count: 3200, description: 'Industry-leading noise cancellation with exceptional sound quality.', features: ['Noise cancellation', '30-hour battery', 'Multipoint connection'], amazon_link: '#' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', loadProduct);
+    </script>
+</body>
+</html>

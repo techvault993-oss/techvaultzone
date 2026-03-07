@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechVaultZone - Your Ultimate Tech Destination</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo">
+                    <img src="images/logo.png" alt="TechVaultZone Logo" style="height: 40px; width: auto;">
+                    <span>TechVaultZone</span>
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="categories.html">Categories</a>
+                    <a href="deals.html">Deals</a>
+                    <a href="reviews.html">Reviews</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" onclick="handleThemeClick(event)">
+                    <i class="fas fa-moon"></i>
+                    <span class="secret-dot"></span>
+                </button>
+                <a href="admin/login.html" class="admin-link">
+                    <i class="fas fa-cog"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">⚡ Welcome to TechVaultZone</span>
+            <h1 class="hero-title">Discover the Future of <span class="gradient-text">Technology</span></h1>
+            <p class="hero-subtitle">Your trusted source for honest tech reviews, expert comparisons, and the best deals on the latest gadgets.</p>
+            <div class="hero-buttons">
+                <a href="categories.html" class="btn btn-primary">Explore Categories</a>
+                <a href="about.html" class="btn btn-outline">Learn More</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="productCount">0</span>
+                    <span class="stat-label">Products</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="categoryCount">6</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="reviewCount">0</span>
+                    <span class="stat-label">Reviews</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="images/hero-bg.jpg" alt="Tech Gadgets" onerror="this.src='https://via.placeholder.com/600x400?text=Tech+Hero'">
+            <div class="floating-card card-1">
+                <i class="fas fa-star"></i>
+                <span>Expert Reviews</span>
+            </div>
+            <div class="floating-card card-2">
+                <i class="fas fa-tag"></i>
+                <span>Best Deals</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2>Shop by <span class="gradient-text">Category</span></h2>
+                <p>Explore our wide range of tech categories</p>
+            </div>
+            <div class="category-grid" id="categoryGrid"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-star"></i>
+                    <h3>Expert Reviews</h3>
+                    <p>Honest, unbiased reviews from tech experts</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-tag"></i>
+                    <h3>Best Prices</h3>
+                    <p>Find the best deals and discounts</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Trusted Source</h3>
+                    <p>Reliable information you can trust</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Latest Updates</h3>
+                    <p>Stay updated with newest tech</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Preview -->
+    <section class="about-preview">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <h2>Meet <span class="gradient-text">Abdul Malik Lakho</span></h2>
+                    <p class="founder-title">Founder & Tech Lead at TechVaultZone</p>
+                    <p>With over a decade of experience in technology reviewing, Abdul Malik Lakho founded TechVaultZone with a simple mission: to help people make informed tech decisions without the marketing hype.</p>
+                    <p>What started as a passion project has grown into a trusted platform serving thousands of tech enthusiasts monthly.</p>
+                    <a href="about.html" class="btn btn-outline">Read Full Story</a>
+                </div>
+                <div class="about-image">
+                    <img src="images/founder.jpg" alt="Abdul Malik Lakho" onerror="this.src='https://via.placeholder.com/400x500?text=Founder'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YouTube Section -->
+    <section class="youtube-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Watch Our <span class="gradient-text">YouTube Channel</span></h2>
+                <p>Subscribe for honest tech reviews every week</p>
+            </div>
+            <div class="youtube-card">
+                <div class="youtube-content">
+                    <i class="fab fa-youtube youtube-icon"></i>
+                    <h3>TechVaultZone on YouTube</h3>
+                    <p>Join 1,000+ tech enthusiasts getting honest reviews weekly. New videos every Monday, Wednesday, and Friday!</p>
+                    <div class="youtube-stats">
+                        <div class="stat">
+                            <span class="stat-number">100+</span>
+                            <span class="stat-label">Videos</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">1K+</span>
+                            <span class="stat-label">Subscribers</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">50K+</span>
+                            <span class="stat-label">Views</span>
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/@TechVautZone" target="_blank" class="btn youtube-btn">
+                        <i class="fab fa-youtube"></i> Subscribe Now
+                    </a>
+                    <p class="small-text">🔔 Click the bell to get notifications</p>
+                </div>
+                <div class="youtube-preview">
+                    <img src="images/youtube-preview.jpg" alt="YouTube Channel Preview" onerror="this.src='https://via.placeholder.com/400x300?text=YouTube+Channel'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Stay Updated with TechVaultZone</h2>
+                <p>Get the latest tech news and exclusive deals directly in your inbox</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+                <p class="newsletter-note">No spam. Unsubscribe anytime.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="images/logo.png" alt="TechVaultZone" style="height: 30px;">
+                        <span>TechVaultZone</span>
+                    </div>
+                    <p>Your trusted source for honest tech reviews and the best deals on the latest technology products.</p>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@TechVautZone" target="_blank" class="youtube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/techv_ault/?hl=en" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61585092247422" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.pinterest.com/techvaultzone" target="_blank" class="pinterest"><i class="fab fa-pinterest"></i></a>
+                        <a href="https://www.tiktok.com/@techvaultzone" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="category.html?slug=smartphones">Smartphones</a></li>
+                        <li><a href="category.html?slug=laptops">Laptops</a></li>
+                        <li><a href="category.html?slug=headphones">Headphones</a></li>
+                        <li><a href="category.html?slug=cameras">Cameras</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> techvault993@gmail.com</li>
+                        <li><i class="fas fa-globe"></i> techvaultzone.netlify.app</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TechVaultZone. All rights reserved. Built with ❤️ by Abdul Malik Lakho</p>
+                <p class="amazon-disclosure">As an Amazon Associate, I earn from qualifying purchases. (Store ID: techvaultzone-20)</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
