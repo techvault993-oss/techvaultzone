@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css"> <!-- THIS WAS MISSING -->
 </head>
 <body>
     <nav class="navbar">
@@ -140,7 +140,7 @@
             grid.innerHTML = filtered.map(p => `
                 <div class="product-card">
                     ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
-                    <img src="${p.image}" alt="${p.title}" class="product-image" onerror="this.src='https://via.placeholder.com/300'">
+                    <img src="${p.image || p.images?.[0] || 'https://via.placeholder.com/300'}" alt="${p.title}" class="product-image" onerror="this.src='https://via.placeholder.com/300'">
                     <div class="product-content">
                         <h3 class="product-title">${p.title}</h3>
                         <div class="product-price">
