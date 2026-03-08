@@ -241,6 +241,11 @@
             background: #E68900;
         }
         
+        .btn-add-image {
+            background: #6c757d;
+            margin-top: 0.5rem;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
@@ -304,12 +309,13 @@
         
         .image-upload-area {
             border: 2px dashed #0066FF;
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
             background: #f8f9fa;
+            margin-bottom: 1rem;
         }
         
         .image-upload-area:hover {
@@ -318,52 +324,77 @@
         }
         
         .image-upload-area i {
-            font-size: 3rem;
+            font-size: 2rem;
             color: #0066FF;
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
             margin-bottom: 1rem;
         }
         
-        .image-preview {
-            max-width: 200px;
-            max-height: 200px;
-            margin-top: 1rem;
-            border-radius: 10px;
-            display: none;
-        }
-        
-        .image-preview.show {
-            display: block;
-        }
-        
-        .or-divider {
-            text-align: center;
-            margin: 1rem 0;
+        .image-preview-item {
             position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #0066FF;
         }
         
-        .or-divider::before,
-        .or-divider::after {
-            content: '';
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-preview-item .remove-image {
             position: absolute;
-            top: 50%;
-            width: 45%;
-            height: 1px;
-            background: #ddd;
+            top: 2px;
+            right: 2px;
+            background: rgba(220, 53, 69, 0.8);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
         }
         
-        .or-divider::before {
-            left: 0;
+        .image-preview-item .remove-image:hover {
+            background: #dc3545;
         }
         
-        .or-divider::after {
-            right: 0;
+        .primary-badge {
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            background: #28a745;
+            color: white;
+            font-size: 10px;
+            padding: 2px 4px;
+            border-radius: 3px;
         }
         
-        .or-divider span {
-            background: white;
-            padding: 0 1rem;
-            color: #666;
-            font-size: 0.875rem;
+        .image-url-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-url-input input {
+            flex: 1;
+        }
+        
+        .image-url-list {
+            margin-top: 1rem;
         }
         
         .amazon-info {
@@ -440,7 +471,7 @@
                         <div class="stat-icon"><i class="fas fa-tags"></i></div>
                         <div class="stat-info">
                             <h3>Categories</h3>
-                            <div class="number" id="totalCategories">6</div>
+                            <div class="number" id="totalCategories">9</div>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -492,20 +523,21 @@
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Price</th>
+                                <th>Images</th>
                                 <th>Amazon Link</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="productsList">
                             <tr>
-                                <td colspan="6" style="text-align: center;">No products yet</td>
+                                <td colspan="7" style="text-align: center;">No products yet</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             
-            <!-- Add Product Section -->
+            <!-- Add Product Section with MULTIPLE IMAGES -->
             <div id="add-product-section" class="section">
                 <h1>Add New Product</h1>
                 
@@ -552,26 +584,38 @@
                             <input type="number" id="salePrice" step="0.01" placeholder="166.75">
                         </div>
                         
-                        <!-- Image Upload Section -->
+                        <!-- MULTIPLE IMAGE UPLOAD SECTION -->
                         <div class="form-group">
-                            <label>Product Image</label>
-                            <div class="image-upload-area" onclick="document.getElementById('imageUpload').click()">
+                            <label>Product Images (Upload Multiple)</label>
+                            
+                            <!-- Multiple Image Upload -->
+                            <div class="image-upload-area" onclick="document.getElementById('multipleImageUpload').click()">
                                 <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Click to upload image from computer</p>
-                                <p style="font-size: 0.75rem; color: #999;">PNG, JPG up to 5MB</p>
+                                <p>Click to upload multiple images</p>
+                                <p style="font-size: 0.75rem; color: #999;">You can select multiple images at once</p>
                             </div>
-                            <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="previewImage(this)">
-                            <img id="imagePreview" class="image-preview" alt="Preview">
+                            <input type="file" id="multipleImageUpload" accept="image/*" multiple style="display: none;" onchange="handleMultipleImages(this)">
+                            
+                            <!-- Image Previews Container -->
+                            <div id="imagePreviews" class="image-preview-container"></div>
                             
                             <div class="or-divider">
-                                <span>OR</span>
+                                <span>OR Add Image URLs</span>
                             </div>
                             
-                            <label for="imageUrl">Amazon Image URL</label>
-                            <input type="url" id="imageUrl" placeholder="https://m.media-amazon.com/images/...">
+                            <!-- Multiple Image URL Inputs -->
+                            <div id="imageUrls">
+                                <div class="image-url-input">
+                                    <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
+                                    <button type="button" class="btn-sm btn-success" onclick="addImageUrlField()">+</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Hidden input to store all image URLs as JSON -->
+                            <input type="hidden" id="imagesData" value="[]">
                         </div>
                         
-                        <!-- AMAZON AFFILIATE LINK - THIS IS THE BUTTON LINK -->
+                        <!-- AMAZON AFFILIATE LINK -->
                         <div class="form-group">
                             <label for="amazonLink">Your Amazon Affiliate Link *</label>
                             <input type="url" id="amazonLink" required placeholder="https://amzn.to/4le4jWB or https://amazon.com/dp/B092RCLKHN/?tag=techvaultzone-20">
@@ -779,7 +823,7 @@
             const recent = products.slice(0, 5);
             recentList.innerHTML = recent.map(p => `
                 <tr>
-                    <td><img src="${p.image}" class="product-image" onerror="this.src='https://via.placeholder.com/50'"></td>
+                    <td><img src="${p.images?.[0] || p.image || 'https://via.placeholder.com/50'}" class="product-image" onerror="this.src='https://via.placeholder.com/50'"></td>
                     <td>${p.title}</td>
                     <td>$${p.price}</td>
                     <td>
@@ -797,16 +841,17 @@
         function displayProducts() {
             const list = document.getElementById('productsList');
             if (products.length === 0) {
-                list.innerHTML = '<tr><td colspan="6" style="text-align: center;">No products yet</td></tr>';
+                list.innerHTML = '<tr><td colspan="7" style="text-align: center;">No products yet</td></tr>';
                 return;
             }
             
             list.innerHTML = products.map(p => `
                 <tr>
-                    <td><img src="${p.image}" class="product-image" onerror="this.src='https://via.placeholder.com/50'"></td>
+                    <td><img src="${p.images?.[0] || p.image || 'https://via.placeholder.com/50'}" class="product-image" onerror="this.src='https://via.placeholder.com/50'"></td>
                     <td>${p.title}</td>
                     <td>${p.category}</td>
                     <td>$${p.price}</td>
+                    <td>${p.images?.length || 1} images</td>
                     <td>
                         <a href="${p.amazonLink}" target="_blank" class="btn-sm btn-amazon" style="color: white; text-decoration: none;">
                             <i class="fab fa-amazon"></i> Link
@@ -846,37 +891,112 @@
             }
         }
         
-        function previewImage(input) {
-            const preview = document.getElementById('imagePreview');
-            if (input.files && input.files[0]) {
+        // ============================================
+        // MULTIPLE IMAGE HANDLING
+        // ============================================
+        let uploadedImages = [];
+        let imageUrlList = [];
+        
+        function handleMultipleImages(input) {
+            const files = Array.from(input.files);
+            const previewContainer = document.getElementById('imagePreviews');
+            
+            files.forEach((file, index) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.classList.add('show');
-                }
-                reader.readAsDataURL(input.files[0]);
+                    uploadedImages.push({
+                        data: e.target.result,
+                        name: file.name,
+                        isPrimary: uploadedImages.length === 0 // First image is primary
+                    });
+                    
+                    displayImagePreviews();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function displayImagePreviews() {
+            const previewContainer = document.getElementById('imagePreviews');
+            previewContainer.innerHTML = '';
+            
+            uploadedImages.forEach((img, index) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'image-preview-item';
+                previewItem.innerHTML = `
+                    <img src="${img.data}" alt="Preview ${index + 1}">
+                    ${img.isPrimary ? '<span class="primary-badge">Primary</span>' : ''}
+                    <div class="remove-image" onclick="removeImage(${index})">×</div>
+                `;
+                previewContainer.appendChild(previewItem);
+            });
+            
+            // Also display URL images
+            imageUrlList.forEach((url, index) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'image-preview-item';
+                previewItem.innerHTML = `
+                    <img src="${url}" alt="URL Image ${index + 1}" onerror="this.src='https://via.placeholder.com/100'">
+                    ${index === 0 && uploadedImages.length === 0 ? '<span class="primary-badge">Primary</span>' : ''}
+                    <div class="remove-image" onclick="removeUrlImage(${index})">×</div>
+                `;
+                previewContainer.appendChild(previewItem);
+            });
+        }
+        
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            // Set first as primary
+            if (uploadedImages.length > 0) {
+                uploadedImages.forEach((img, i) => {
+                    img.isPrimary = i === 0;
+                });
             }
+            displayImagePreviews();
+        }
+        
+        function removeUrlImage(index) {
+            imageUrlList.splice(index, 1);
+            displayImagePreviews();
+        }
+        
+        function addImageUrlField() {
+            const container = document.getElementById('imageUrls');
+            const newInput = document.createElement('div');
+            newInput.className = 'image-url-input';
+            newInput.innerHTML = `
+                <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
+                <button type="button" class="btn-sm btn-danger" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(newInput);
+        }
+        
+        function collectImageUrls() {
+            const inputs = document.querySelectorAll('.imageUrlInput');
+            const urls = [];
+            inputs.forEach(input => {
+                if (input.value.trim()) {
+                    urls.push(input.value.trim());
+                }
+            });
+            return urls;
         }
         
         function saveProduct(e) {
             e.preventDefault();
             
-            let imageUrl = document.getElementById('imageUrl').value;
-            const uploadedFile = document.getElementById('imageUpload').files[0];
+            // Collect all images (uploaded + URLs)
+            const urlImages = collectImageUrls();
+            const allImages = [
+                ...uploadedImages.map(img => img.data),
+                ...urlImages
+            ];
             
-            if (uploadedFile) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    saveProductWithData(e.target.result);
-                };
-                reader.readAsDataURL(uploadedFile);
-                return;
+            // If no images, use placeholder
+            if (allImages.length === 0) {
+                allImages.push('https://via.placeholder.com/300');
             }
             
-            saveProductWithData(imageUrl || 'https://via.placeholder.com/300');
-        }
-        
-        function saveProductWithData(image) {
             const features = document.getElementById('features').value.split('\n').filter(f => f.trim());
             
             const product = {
@@ -886,19 +1006,32 @@
                 description: document.getElementById('description').value,
                 price: parseFloat(document.getElementById('price').value),
                 salePrice: document.getElementById('salePrice').value ? parseFloat(document.getElementById('salePrice').value) : null,
-                image: image,
-                amazonLink: document.getElementById('amazonLink').value, // USER'S CUSTOM AMAZON LINK
+                images: allImages, // Store all images
+                image: allImages[0], // First image as primary
+                amazonLink: document.getElementById('amazonLink').value,
                 badge: document.getElementById('badge').value || null,
                 rating: parseFloat(document.getElementById('rating').value),
-                features: features
+                features: features,
+                reviewCount: 0
             };
             
             products.push(product);
             localStorage.setItem('products', JSON.stringify(products));
             
-            alert('Product saved successfully! Your Amazon button will use your custom link.');
+            alert('Product saved successfully with ' + allImages.length + ' images!');
+            
+            // Reset form
             document.getElementById('productForm').reset();
-            document.getElementById('imagePreview').classList.remove('show');
+            uploadedImages = [];
+            imageUrlList = [];
+            document.getElementById('imagePreviews').innerHTML = '';
+            document.getElementById('imageUrls').innerHTML = `
+                <div class="image-url-input">
+                    <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
+                    <button type="button" class="btn-sm btn-success" onclick="addImageUrlField()">+</button>
+                </div>
+            `;
+            
             showSection('products');
             displayProducts();
             updateDashboard();
