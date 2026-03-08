@@ -36,7 +36,6 @@
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             animation: slideUp 0.5s ease;
-            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .logo {
@@ -59,12 +58,6 @@
             font-size: 1.5rem;
             margin-top: 0.5rem;
             color: #333;
-        }
-        
-        .logo p {
-            color: #666;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
         }
         
         .step {
@@ -151,10 +144,6 @@
             margin-top: 0.5rem;
         }
         
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        
         .error {
             color: #dc3545;
             text-align: center;
@@ -168,13 +157,6 @@
         
         .error.show {
             display: block;
-        }
-        
-        .success {
-            color: #28a745;
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.875rem;
         }
         
         .attempts {
@@ -212,6 +194,7 @@
                 <div class="step-dot active" id="step1Dot"></div>
                 <div class="step-dot" id="step2Dot"></div>
                 <div class="step-dot" id="step3Dot"></div>
+                <div class="step-dot" id="step4Dot"></div>
             </div>
             
             <!-- STEP 1: Username & Password -->
@@ -238,7 +221,7 @@
             <!-- STEP 2: Security Question 1 -->
             <div class="step" id="step2">
                 <div class="form-group">
-                    <label>Question 1: What is your hometown in Pakistan?</label>
+                    <label>Question 1: What is your favorite city?</label>
                     <input type="text" id="answer1" placeholder="Your answer">
                 </div>
                 
@@ -249,7 +232,7 @@
             <!-- STEP 3: Security Question 2 -->
             <div class="step" id="step3">
                 <div class="form-group">
-                    <label>Question 2: What was your first phone model?</label>
+                    <label>Question 2: What is your favorite food?</label>
                     <input type="text" id="answer2" placeholder="Your answer">
                 </div>
                 
@@ -260,7 +243,7 @@
             <!-- STEP 4: Security Question 3 -->
             <div class="step" id="step4">
                 <div class="form-group">
-                    <label>Question 3: What is your favorite Pakistani food?</label>
+                    <label>Question 3: What is your favorite hobby?</label>
                     <input type="text" id="answer3" placeholder="Your answer">
                 </div>
                 
@@ -276,10 +259,9 @@
     <script>
         // ============================================
         // ULTRA SECURE ADMIN LOGIN
-        // ALL ANSWERS = "pakistan" (lowercase)
+        // ALL ANSWERS = "pakistan" (YOU MUST REMEMBER)
         // ============================================
         
-        // Security configuration - ONLY YOU KNOW THIS
         const SECRETS = {
             username: 'admin',
             password: 'pakistan',
@@ -288,12 +270,10 @@
             answer3: 'pakistan'
         };
         
-        // Security state
         let currentStep = 1;
         let attempts = 5;
         let lockedUntil = null;
         
-        // Check if locked
         function isLocked() {
             if (lockedUntil && new Date() < lockedUntil) {
                 const waitTime = Math.ceil((lockedUntil - new Date()) / 1000);
@@ -303,26 +283,23 @@
             return false;
         }
         
-        // Handle failed attempt
         function failedAttempt() {
             attempts--;
             document.getElementById('attemptCount').textContent = `Attempts remaining: ${attempts}`;
             
             if (attempts <= 0) {
-                lockedUntil = new Date(Date.now() + 15 * 60 * 1000); // Lock for 15 minutes
+                lockedUntil = new Date(Date.now() + 15 * 60 * 1000);
                 showError('Too many failed attempts. Locked for 15 minutes.');
                 disableAllInputs();
             }
         }
         
-        // Reset attempts on successful login
         function resetAttempts() {
             attempts = 5;
             lockedUntil = null;
             document.getElementById('attemptCount').textContent = `Attempts remaining: ${attempts}`;
         }
         
-        // Show error
         function showError(message) {
             const errorEl = document.getElementById('errorMessage');
             errorEl.textContent = message;
@@ -333,7 +310,6 @@
             }, 3000);
         }
         
-        // Go to specific step
         function goToStep(step) {
             if (isLocked()) return;
             
@@ -347,7 +323,6 @@
             currentStep = step;
         }
         
-        // Step 1: Check username and password
         document.getElementById('step1Form').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -358,14 +333,12 @@
             
             if (username === SECRETS.username && password === SECRETS.password) {
                 goToStep(2);
-                document.getElementById('step2Dot').classList.add('active');
             } else {
                 failedAttempt();
                 showError('Invalid username or password');
             }
         });
         
-        // Step 2: Check answer 1
         function checkAnswer1() {
             if (isLocked()) return;
             
@@ -373,14 +346,12 @@
             
             if (answer === SECRETS.answer1) {
                 goToStep(3);
-                document.getElementById('step3Dot').classList.add('active');
             } else {
                 failedAttempt();
                 showError('Incorrect answer');
             }
         }
         
-        // Step 3: Check answer 2
         function checkAnswer2() {
             if (isLocked()) return;
             
@@ -388,29 +359,24 @@
             
             if (answer === SECRETS.answer2) {
                 goToStep(4);
-                document.getElementById('step4Dot').classList.add('active');
             } else {
                 failedAttempt();
                 showError('Incorrect answer');
             }
         }
         
-        // Step 4: Check answer 3 and login
         function checkAnswer3() {
             if (isLocked()) return;
             
             const answer = document.getElementById('answer3').value.toLowerCase().trim();
             
             if (answer === SECRETS.answer3) {
-                // Success! All answers correct
                 resetAttempts();
                 
-                // Create secure session
                 const sessionToken = btoa(Date.now() + 'admin' + Math.random());
                 sessionStorage.setItem('adminToken', sessionToken);
                 sessionStorage.setItem('adminLoginTime', Date.now());
                 
-                // Redirect to admin panel
                 window.location.href = 'index.html';
             } else {
                 failedAttempt();
@@ -418,17 +384,15 @@
             }
         }
         
-        // Disable all inputs when locked
         function disableAllInputs() {
             document.querySelectorAll('input, button').forEach(el => {
                 el.disabled = true;
             });
         }
         
-        // Check if already logged in
         if (sessionStorage.getItem('adminToken')) {
             const loginTime = sessionStorage.getItem('adminLoginTime');
-            if (loginTime && (Date.now() - loginTime < 30 * 60 * 1000)) { // 30 minute session
+            if (loginTime && (Date.now() - loginTime < 30 * 60 * 1000)) {
                 window.location.href = 'index.html';
             } else {
                 sessionStorage.removeItem('adminToken');
