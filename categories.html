@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -25,6 +25,8 @@
                 <div class="nav-links" id="navLinks">
                     <a href="index.html">Home</a>
                     <a href="categories.html">Categories</a>
+                    <a href="deals.html">Deals</a>
+                    <a href="reviews.html">Reviews</a>
                     <a href="about.html">About</a>
                     <a href="contact.html">Contact</a>
                 </div>
@@ -49,9 +51,7 @@
 
     <section class="categories">
         <div class="container">
-            <div class="category-grid" id="categoryGrid">
-                <!-- Categories will be loaded from main.js -->
-            </div>
+            <div class="category-grid" id="categoriesGrid"></div>
         </div>
     </section>
 
@@ -63,12 +63,13 @@
                         <img src="images/logo.png" alt="TechVaultZone" style="height: 30px;">
                         <span>TechVaultZone</span>
                     </div>
-                    <p>Your trusted source for honest tech reviews and the best deals on the latest technology products.</p>
+                    <p>Your trusted source for honest tech reviews.</p>
                     <div class="social-links">
-                        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.youtube.com/@TechVautZone" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/techv_ault/?hl=en" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61585092247422" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.pinterest.com/techvaultzone" target="_blank"><i class="fab fa-pinterest"></i></a>
+                        <a href="https://www.tiktok.com/@techvaultzone" target="_blank"><i class="fab fa-tiktok"></i></a>
                     </div>
                 </div>
                 <div class="footer-col">
@@ -92,18 +93,69 @@
                 <div class="footer-col">
                     <h4>Contact</h4>
                     <ul class="contact-info">
-                        <li><i class="fas fa-envelope"></i> techvaultzone@gmail.com</li>
-                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-map-marker-alt"></i> San Francisco, CA</li>
+                        <li><i class="fas fa-envelope"></i> techvault993@gmail.com</li>
+                        <li><i class="fas fa-globe"></i> techvaultzone.netlify.app</li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 TechVaultZone. All rights reserved. Built with ❤️ by Abdul Malik Lakho</p>
+                <p>&copy; 2024 TechVaultZone. All rights reserved.</p>
+                <p class="amazon-disclosure">As an Amazon Associate, I earn from qualifying purchases.</p>
             </div>
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script>
+        const categories = [
+            { name: 'Smartphones', slug: 'smartphones', icon: 'fa-mobile-alt', desc: 'Latest mobile phones' },
+            { name: 'Laptops', slug: 'laptops', icon: 'fa-laptop', desc: 'Powerful laptops' },
+            { name: 'Headphones', slug: 'headphones', icon: 'fa-headphones', desc: 'Wireless earbuds' },
+            { name: 'Cameras', slug: 'cameras', icon: 'fa-camera', desc: 'DSLR & mirrorless' },
+            { name: 'Smartwatches', slug: 'smartwatches', icon: 'fa-clock', desc: 'Wearable tech' },
+            { name: 'Tablets', slug: 'tablets', icon: 'fa-tablet-alt', desc: 'iPads & tablets' },
+            { name: 'Gaming', slug: 'gaming', icon: 'fa-gamepad', desc: 'Consoles & gear' },
+            { name: 'Smart Home', slug: 'smart-home', icon: 'fa-home', desc: 'Smart speakers' },
+            { name: 'Accessories', slug: 'accessories', icon: 'fa-headphones', desc: 'Chargers & cases' }
+        ];
+        
+        function loadCategories() {
+            const grid = document.getElementById('categoriesGrid');
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            
+            grid.innerHTML = categories.map(cat => {
+                const count = products.filter(p => p.category === cat.slug).length;
+                return `
+                    <a href="category.html?slug=${cat.slug}" class="category-card">
+                        <div class="category-icon">
+                            <i class="fas ${cat.icon}"></i>
+                        </div>
+                        <h3>${cat.name}</h3>
+                        <p>${cat.desc}</p>
+                        <span class="category-count">${count} products</span>
+                    </a>
+                `;
+            }).join('');
+        }
+        
+        function initTheme() {
+            const themeToggle = document.getElementById('themeToggle');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeToggle.innerHTML = savedTheme === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            
+            themeToggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                themeToggle.innerHTML = next === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCategories();
+            initTheme();
+        });
+    </script>
 </body>
 </html>
