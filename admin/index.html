@@ -241,11 +241,6 @@
             background: #E68900;
         }
         
-        .btn-add-image {
-            background: #6c757d;
-            margin-top: 0.5rem;
-        }
-        
         table {
             width: 100%;
             border-collapse: collapse;
@@ -393,10 +388,6 @@
             flex: 1;
         }
         
-        .image-url-list {
-            margin-top: 1rem;
-        }
-        
         .amazon-info {
             background: #232f3e;
             color: white;
@@ -530,27 +521,27 @@
                         </thead>
                         <tbody id="productsList">
                             <tr>
-                                <td colspan="7" style="text-align: center;">No products yet</td>
+                                <td colspan="7" style="text-align: center;">Loading products...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             
-            <!-- Add Product Section with MULTIPLE IMAGES -->
+            <!-- Add Product Section -->
             <div id="add-product-section" class="section">
                 <h1>Add New Product</h1>
                 
                 <div class="card">
                     <div class="amazon-info">
                         <p><i class="fab fa-amazon"></i> <strong>Your Amazon Store ID:</strong> techvaultzone-20</p>
-                        <p style="font-size: 0.875rem; margin-top: 0.5rem;">Paste your Amazon affiliate link in the field below</p>
+                        <p style="font-size: 0.875rem; margin-top: 0.5rem;">Images are uploaded to Supabase cloud storage</p>
                     </div>
                     
-                    <form id="productForm" onsubmit="saveProduct(event)">
+                    <form id="productForm">
                         <div class="form-group">
                             <label for="title">Product Title *</label>
-                            <input type="text" id="title" required placeholder="e.g., Garmin Forerunner 55 GPS Running Watch">
+                            <input type="text" id="title" required placeholder="e.g., Garmin Quatix 8 Marine GPS Smartwatch">
                         </div>
                         
                         <div class="form-group">
@@ -576,62 +567,61 @@
                         
                         <div class="form-group">
                             <label for="price">Price ($) *</label>
-                            <input type="number" id="price" step="0.01" required placeholder="199.99">
+                            <input type="number" id="price" step="0.01" required placeholder="1199.99">
                         </div>
                         
                         <div class="form-group">
                             <label for="salePrice">Sale Price ($) (Optional)</label>
-                            <input type="number" id="salePrice" step="0.01" placeholder="166.75">
+                            <input type="number" id="salePrice" step="0.01" placeholder="949.99">
                         </div>
                         
-                        <!-- MULTIPLE IMAGE UPLOAD SECTION -->
+                        <!-- IMAGE UPLOAD SECTION -->
                         <div class="form-group">
-                            <label>Product Images (Upload Multiple)</label>
+                            <label>Product Images (Upload to Supabase)</label>
                             
-                            <!-- Multiple Image Upload -->
-                            <div class="image-upload-area" onclick="document.getElementById('multipleImageUpload').click()">
+                            <div class="image-upload-area" onclick="document.getElementById('imageUpload').click()">
                                 <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Click to upload multiple images</p>
-                                <p style="font-size: 0.75rem; color: #999;">You can select multiple images at once</p>
+                                <p>Click to upload images to cloud</p>
+                                <p style="font-size: 0.75rem; color: #999;">Images stored permanently on Supabase</p>
                             </div>
-                            <input type="file" id="multipleImageUpload" accept="image/*" multiple style="display: none;" onchange="handleMultipleImages(this)">
+                            <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(this)">
                             
-                            <!-- Image Previews Container -->
+                            <!-- Upload Progress -->
+                            <div id="uploadProgress" style="display: none; margin: 10px 0;">
+                                <div style="background: #e0e0e0; border-radius: 10px; height: 20px;">
+                                    <div id="progressBar" style="background: #0066FF; width: 0%; height: 20px; border-radius: 10px; color: white; text-align: center; font-size: 12px; line-height: 20px;">0%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Image Previews -->
                             <div id="imagePreviews" class="image-preview-container"></div>
                             
                             <div class="or-divider">
                                 <span>OR Add Image URLs</span>
                             </div>
                             
-                            <!-- Multiple Image URL Inputs -->
                             <div id="imageUrls">
                                 <div class="image-url-input">
                                     <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
                                     <button type="button" class="btn-sm btn-success" onclick="addImageUrlField()">+</button>
                                 </div>
                             </div>
-                            
-                            <!-- Hidden input to store all image URLs as JSON -->
-                            <input type="hidden" id="imagesData" value="[]">
                         </div>
                         
-                        <!-- AMAZON AFFILIATE LINK -->
+                        <!-- AMAZON LINK -->
                         <div class="form-group">
                             <label for="amazonLink">Your Amazon Affiliate Link *</label>
-                            <input type="url" id="amazonLink" required placeholder="https://amzn.to/4le4jWB or https://amazon.com/dp/B092RCLKHN/?tag=techvaultzone-20">
-                            <p style="font-size: 0.75rem; color: #0066FF; margin-top: 0.25rem;">
-                                <i class="fas fa-info-circle"></i> When users click "Buy on Amazon" button, they will go to THIS link
-                            </p>
+                            <input type="url" id="amazonLink" required placeholder="https://amzn.to/47xLIz4">
                         </div>
                         
                         <div class="form-group">
                             <label for="badge">Badge (Optional)</label>
-                            <input type="text" id="badge" placeholder="#1 Best Seller, New, Sale">
+                            <input type="text" id="badge" placeholder="Amazon's Choice, Best Seller">
                         </div>
                         
                         <div class="form-group">
                             <label for="rating">Rating (0-5)</label>
-                            <input type="number" id="rating" step="0.1" min="0" max="5" value="4.5">
+                            <input type="number" id="rating" step="0.1" min="0" max="5" value="4.6">
                         </div>
                         
                         <div class="form-group">
@@ -639,7 +629,7 @@
                             <textarea id="features" rows="4" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"></textarea>
                         </div>
                         
-                        <button type="submit" class="btn">Save Product</button>
+                        <button type="submit" class="btn">Save Product to Supabase</button>
                     </form>
                 </div>
             </div>
@@ -647,93 +637,16 @@
             <!-- Categories Section -->
             <div id="categories-section" class="section">
                 <h1>Manage Categories</h1>
-                
                 <div class="card">
-                    <div class="card-header">
-                        <h2>All Categories</h2>
-                        <button class="btn" onclick="addNewCategory()">Add Category</button>
-                    </div>
-                    
-                    <table id="categoriesTable">
-                        <thead>
-                            <tr>
-                                <th>Category Name</th>
-                                <th>Slug</th>
-                                <th>Products</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="categoriesList">
-                            <tr>
-                                <td>Smartphones</td>
-                                <td>smartphones</td>
-                                <td id="count-smartphones">0</td>
-                                <td><button class="btn-sm btn-danger" onclick="deleteCategory('smartphones')">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Laptops</td>
-                                <td>laptops</td>
-                                <td id="count-laptops">0</td>
-                                <td><button class="btn-sm btn-danger" onclick="deleteCategory('laptops')">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Headphones</td>
-                                <td>headphones</td>
-                                <td id="count-headphones">0</td>
-                                <td><button class="btn-sm btn-danger" onclick="deleteCategory('headphones')">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Cameras</td>
-                                <td>cameras</td>
-                                <td id="count-cameras">0</td>
-                                <td><button class="btn-sm btn-danger" onclick="deleteCategory('cameras')">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Smartwatches</td>
-                                <td>smartwatches</td>
-                                <td id="count-smartwatches">0</td>
-                                <td><button class="btn-sm btn-danger" onclick="deleteCategory('smartwatches')">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Tablets</td>
-                                <td>tablets</td>
-                                <td id="count-tablets">0</td>
-                                <td><button class="btn-sm btn-danger" onclick="deleteCategory('tablets')">Delete</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p>Categories are managed in the database.</p>
                 </div>
             </div>
             
             <!-- Security Section -->
             <div id="security-section" class="section">
                 <h1>Security Settings</h1>
-                
                 <div class="card">
-                    <div class="card-header">
-                        <h2>Login History</h2>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date/Time</th>
-                                <th>IP Address</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="loginHistory">
-                            <tr>
-                                <td colspan="3" style="text-align: center;">No login history</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Session Management</h2>
-                    </div>
-                    <p>Your session expires in: <span id="sessionTimer">30:00</span></p>
+                    <p>Session expires in: <span id="sessionTimer">30:00</span></p>
                     <button class="btn btn-success" onclick="extendSession()">Extend Session</button>
                 </div>
             </div>
@@ -741,10 +654,20 @@
     </div>
     
     <div class="session-warning" id="sessionWarning">
-        <i class="fas fa-clock"></i> Your session will expire in 5 minutes
+        <i class="fas fa-clock"></i> Session expires in 5 minutes
     </div>
 
+    <!-- Supabase Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // ============================================
+        // SUPABASE CONFIGURATION
+        // ============================================
+        const SUPABASE_URL = 'https://eyigxuzyciytohrclugy.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5aWd4dXp5Y2l5dG9ocmNsdWd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMzA4ODgsImV4cCI6MjA4ODYwNjg4OH0.-l10eOlJR4M5SXcq-Qlo9Ga1tDJkVZkM-9VczcOhDyg';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
         // ============================================
         // SECURITY CHECK
         // ============================================
@@ -756,21 +679,18 @@
                 window.location.href = 'login.html';
                 return;
             }
-            
-            const elapsed = Date.now() - parseInt(loginTime);
-            if (elapsed > 30 * 60 * 1000) {
-                sessionStorage.clear();
-                window.location.href = 'login.html';
-                return;
-            }
         })();
         
         // ============================================
-        // PRODUCT MANAGEMENT
+        // GLOBAL VARIABLES
         // ============================================
-        let products = JSON.parse(localStorage.getItem('products') || '[]');
+        let uploadedFiles = [];
+        let imageUrlList = [];
+        let products = [];
         
-        // Session timer
+        // ============================================
+        // SESSION MANAGEMENT
+        // ============================================
         let sessionTimer = setInterval(() => {
             const loginTime = parseInt(sessionStorage.getItem('adminLoginTime'));
             const elapsed = Date.now() - loginTime;
@@ -787,10 +707,8 @@
                     timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 }
                 
-                if (remaining <= 5 * 60 * 1000 && remaining > 4 * 60 * 1000) {
+                if (remaining <= 5 * 60 * 1000) {
                     document.getElementById('sessionWarning').classList.add('show');
-                } else {
-                    document.getElementById('sessionWarning').classList.remove('show');
                 }
             }
         }, 1000);
@@ -799,6 +717,9 @@
             sessionStorage.setItem('adminLoginTime', Date.now());
         }
         
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
         function showSection(section) {
             document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -806,156 +727,87 @@
             document.querySelector(`.sidebar a[onclick="showSection('${section}')"]`).classList.add('active');
             document.getElementById(section + '-section').classList.add('active');
             
-            if (section === 'dashboard') updateDashboard();
-            if (section === 'products') displayProducts();
-            if (section === 'categories') updateCategoryCounts();
-        }
-        
-        function updateDashboard() {
-            document.getElementById('totalProducts').textContent = products.length;
-            
-            const recentList = document.getElementById('recentProductsList');
-            if (products.length === 0) {
-                recentList.innerHTML = '<tr><td colspan="5" style="text-align: center;">No products yet. Add your first product!</td></tr>';
-                return;
-            }
-            
-            const recent = products.slice(0, 5);
-            recentList.innerHTML = recent.map(p => `
-                <tr>
-                    <td><img src="${p.images?.[0] || p.image || 'https://via.placeholder.com/50'}" class="product-image" onerror="this.src='https://via.placeholder.com/50'"></td>
-                    <td>${p.title}</td>
-                    <td>$${p.price}</td>
-                    <td>
-                        <a href="${p.amazonLink}" target="_blank" class="btn-sm btn-amazon" style="color: white; text-decoration: none;">
-                            <i class="fab fa-amazon"></i> View
-                        </a>
-                    </td>
-                    <td>
-                        <button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
-        function displayProducts() {
-            const list = document.getElementById('productsList');
-            if (products.length === 0) {
-                list.innerHTML = '<tr><td colspan="7" style="text-align: center;">No products yet</td></tr>';
-                return;
-            }
-            
-            list.innerHTML = products.map(p => `
-                <tr>
-                    <td><img src="${p.images?.[0] || p.image || 'https://via.placeholder.com/50'}" class="product-image" onerror="this.src='https://via.placeholder.com/50'"></td>
-                    <td>${p.title}</td>
-                    <td>${p.category}</td>
-                    <td>$${p.price}</td>
-                    <td>${p.images?.length || 1} images</td>
-                    <td>
-                        <a href="${p.amazonLink}" target="_blank" class="btn-sm btn-amazon" style="color: white; text-decoration: none;">
-                            <i class="fab fa-amazon"></i> Link
-                        </a>
-                    </td>
-                    <td>
-                        <button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
-                    </td>
-                </tr>
-            `).join('');
-            
-            updateCategoryCounts();
-        }
-        
-        function updateCategoryCounts() {
-            const counts = {
-                smartphones: 0,
-                laptops: 0,
-                headphones: 0,
-                cameras: 0,
-                smartwatches: 0,
-                tablets: 0,
-                gaming: 0,
-                'smart-home': 0,
-                accessories: 0
-            };
-            
-            products.forEach(p => {
-                if (counts[p.category] !== undefined) {
-                    counts[p.category]++;
-                }
-            });
-            
-            for (let cat in counts) {
-                const el = document.getElementById(`count-${cat}`);
-                if (el) el.textContent = counts[cat];
-            }
+            if (section === 'products') loadProducts();
+            if (section === 'dashboard') loadProducts();
         }
         
         // ============================================
-        // MULTIPLE IMAGE HANDLING
+        // SUPABASE IMAGE UPLOAD
         // ============================================
-        let uploadedImages = [];
-        let imageUrlList = [];
+        async function uploadImageToSupabase(file) {
+            const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '-')}`;
+            
+            const { data, error } = await supabase.storage
+                .from('product-images')
+                .upload(fileName, file);
+            
+            if (error) throw error;
+            
+            const { data: { publicUrl } } = supabase.storage
+                .from('product-images')
+                .getPublicUrl(fileName);
+            
+            return publicUrl;
+        }
         
-        function handleMultipleImages(input) {
+        async function handleImageUpload(input) {
             const files = Array.from(input.files);
+            uploadedFiles = files;
+            
+            // Show previews
             const previewContainer = document.getElementById('imagePreviews');
+            previewContainer.innerHTML = '';
             
             files.forEach((file, index) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    uploadedImages.push({
-                        data: e.target.result,
-                        name: file.name,
-                        isPrimary: uploadedImages.length === 0 // First image is primary
-                    });
-                    
-                    displayImagePreviews();
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'image-preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <div class="remove-image" onclick="removeFile(${index})">×</div>
+                    `;
+                    previewContainer.appendChild(previewItem);
                 };
                 reader.readAsDataURL(file);
             });
+        }
+        
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            displayImagePreviews();
         }
         
         function displayImagePreviews() {
             const previewContainer = document.getElementById('imagePreviews');
             previewContainer.innerHTML = '';
             
-            uploadedImages.forEach((img, index) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'image-preview-item';
-                previewItem.innerHTML = `
-                    <img src="${img.data}" alt="Preview ${index + 1}">
-                    ${img.isPrimary ? '<span class="primary-badge">Primary</span>' : ''}
-                    <div class="remove-image" onclick="removeImage(${index})">×</div>
-                `;
-                previewContainer.appendChild(previewItem);
+            uploadedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'image-preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <div class="remove-image" onclick="removeFile(${index})">×</div>
+                    `;
+                    previewContainer.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
             });
             
-            // Also display URL images
             imageUrlList.forEach((url, index) => {
                 const previewItem = document.createElement('div');
                 previewItem.className = 'image-preview-item';
                 previewItem.innerHTML = `
-                    <img src="${url}" alt="URL Image ${index + 1}" onerror="this.src='https://via.placeholder.com/100'">
-                    ${index === 0 && uploadedImages.length === 0 ? '<span class="primary-badge">Primary</span>' : ''}
-                    <div class="remove-image" onclick="removeUrlImage(${index})">×</div>
+                    <img src="${url}" alt="URL Image">
+                    <div class="remove-image" onclick="removeUrl(${index})">×</div>
                 `;
                 previewContainer.appendChild(previewItem);
             });
         }
         
-        function removeImage(index) {
-            uploadedImages.splice(index, 1);
-            // Set first as primary
-            if (uploadedImages.length > 0) {
-                uploadedImages.forEach((img, i) => {
-                    img.isPrimary = i === 0;
-                });
-            }
-            displayImagePreviews();
-        }
-        
-        function removeUrlImage(index) {
+        function removeUrl(index) {
             imageUrlList.splice(index, 1);
             displayImagePreviews();
         }
@@ -972,9 +824,8 @@
         }
         
         function collectImageUrls() {
-            const inputs = document.querySelectorAll('.imageUrlInput');
             const urls = [];
-            inputs.forEach(input => {
+            document.querySelectorAll('.imageUrlInput').forEach(input => {
                 if (input.value.trim()) {
                     urls.push(input.value.trim());
                 }
@@ -982,98 +833,210 @@
             return urls;
         }
         
-        function saveProduct(e) {
-            e.preventDefault();
-            
-            // Collect all images (uploaded + URLs)
-            const urlImages = collectImageUrls();
-            const allImages = [
-                ...uploadedImages.map(img => img.data),
-                ...urlImages
-            ];
-            
-            // If no images, use placeholder
-            if (allImages.length === 0) {
-                allImages.push('https://via.placeholder.com/300');
-            }
-            
-            const features = document.getElementById('features').value.split('\n').filter(f => f.trim());
-            
-            const product = {
-                id: Date.now(),
-                title: document.getElementById('title').value,
-                category: document.getElementById('category').value,
-                description: document.getElementById('description').value,
-                price: parseFloat(document.getElementById('price').value),
-                salePrice: document.getElementById('salePrice').value ? parseFloat(document.getElementById('salePrice').value) : null,
-                images: allImages, // Store all images
-                image: allImages[0], // First image as primary
-                amazonLink: document.getElementById('amazonLink').value,
-                badge: document.getElementById('badge').value || null,
-                rating: parseFloat(document.getElementById('rating').value),
-                features: features,
-                reviewCount: 0
-            };
-            
-            products.push(product);
-            localStorage.setItem('products', JSON.stringify(products));
-            
-            alert('Product saved successfully with ' + allImages.length + ' images!');
-            
-            // Reset form
-            document.getElementById('productForm').reset();
-            uploadedImages = [];
-            imageUrlList = [];
-            document.getElementById('imagePreviews').innerHTML = '';
-            document.getElementById('imageUrls').innerHTML = `
-                <div class="image-url-input">
-                    <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
-                    <button type="button" class="btn-sm btn-success" onclick="addImageUrlField()">+</button>
-                </div>
-            `;
-            
-            showSection('products');
-            displayProducts();
-            updateDashboard();
-        }
-        
-        function deleteProduct(id) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                products = products.filter(p => p.id !== id);
-                localStorage.setItem('products', JSON.stringify(products));
+        // ============================================
+        // PRODUCT FUNCTIONS
+        // ============================================
+        async function loadProducts() {
+            try {
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                products = data || [];
                 displayProducts();
                 updateDashboard();
                 updateCategoryCounts();
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('productsList').innerHTML = '<tr><td colspan="7" style="text-align: center;">Error loading products</td></tr>';
             }
         }
         
-        function addNewCategory() {
-            const newCat = prompt('Enter new category name (e.g., "Smartwatches"):');
-            if (newCat) {
-                alert('Category added! You can now select it from the dropdown.');
-                location.reload();
+        function displayProducts() {
+            const list = document.getElementById('productsList');
+            
+            if (products.length === 0) {
+                list.innerHTML = '<tr><td colspan="7" style="text-align: center;">No products yet</td></tr>';
+                return;
             }
+            
+            list.innerHTML = products.map(p => `
+                <tr>
+                    <td><img src="${p.image_urls?.[0] || p.image_url || 'https://via.placeholder.com/50'}" class="product-image"></td>
+                    <td>${p.title}</td>
+                    <td>${p.category}</td>
+                    <td>$${p.price}</td>
+                    <td>${p.image_urls?.length || 1}</td>
+                    <td>
+                        <a href="${p.amazon_link}" target="_blank" class="btn-sm btn-amazon">Link</a>
+                    </td>
+                    <td>
+                        <button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
         }
         
-        function deleteCategory(slug) {
-            const productsInCat = products.filter(p => p.category === slug).length;
-            if (productsInCat > 0) {
-                alert(`Cannot delete category with ${productsInCat} products. Move or delete products first.`);
-            } else {
-                if (confirm(`Delete ${slug} category?`)) {
-                    alert('Category deleted. Refresh to see changes.');
+        function updateDashboard() {
+            document.getElementById('totalProducts').textContent = products.length;
+            
+            const recentList = document.getElementById('recentProductsList');
+            if (products.length === 0) {
+                recentList.innerHTML = '<tr><td colspan="5" style="text-align: center;">No products yet</td></tr>';
+                return;
+            }
+            
+            const recent = products.slice(0, 5);
+            recentList.innerHTML = recent.map(p => `
+                <tr>
+                    <td><img src="${p.image_urls?.[0] || p.image_url}" class="product-image"></td>
+                    <td>${p.title}</td>
+                    <td>$${p.price}</td>
+                    <td><a href="${p.amazon_link}" target="_blank" class="btn-sm btn-amazon">View</a></td>
+                    <td><button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button></td>
+                </tr>
+            `).join('');
+        }
+        
+        function updateCategoryCounts() {
+            const counts = {};
+            products.forEach(p => {
+                counts[p.category] = (counts[p.category] || 0) + 1;
+            });
+            
+            document.querySelectorAll('[id^="count-"]').forEach(el => {
+                const cat = el.id.replace('count-', '');
+                el.textContent = counts[cat] || 0;
+            });
+        }
+        
+        // ============================================
+        // SAVE PRODUCT TO SUPABASE
+        // ============================================
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const saveBtn = this.querySelector('button[type="submit"]');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = 'Uploading to Supabase...';
+            saveBtn.disabled = true;
+            
+            try {
+                // Upload images to Supabase
+                const imageUrls = [...collectImageUrls()];
+                
+                if (uploadedFiles.length > 0) {
+                    for (let file of uploadedFiles) {
+                        const url = await uploadImageToSupabase(file);
+                        if (url) imageUrls.push(url);
+                    }
                 }
+                
+                if (imageUrls.length === 0) {
+                    imageUrls.push('https://via.placeholder.com/300');
+                }
+                
+                // Create slug
+                const title = document.getElementById('title').value;
+                const slug = title.toLowerCase()
+                    .replace(/[^\w\s]/g, '')
+                    .replace(/\s+/g, '-');
+                
+                // Features
+                const features = document.getElementById('features').value
+                    .split('\n')
+                    .filter(f => f.trim());
+                
+                // Product object
+                const product = {
+                    title: title,
+                    slug: slug,
+                    category: document.getElementById('category').value,
+                    description: document.getElementById('description').value,
+                    price: parseFloat(document.getElementById('price').value),
+                    sale_price: document.getElementById('salePrice').value ? parseFloat(document.getElementById('salePrice').value) : null,
+                    image_url: imageUrls[0],
+                    image_urls: imageUrls,
+                    amazon_link: document.getElementById('amazonLink').value,
+                    badge: document.getElementById('badge').value || null,
+                    rating: parseFloat(document.getElementById('rating').value),
+                    features: features,
+                    review_count: 0
+                };
+                
+                // Save to Supabase
+                const { data, error } = await supabase
+                    .from('products')
+                    .insert([product])
+                    .select();
+                
+                if (error) throw error;
+                
+                alert('Product saved to Supabase successfully!');
+                
+                // Reset form
+                this.reset();
+                uploadedFiles = [];
+                imageUrlList = [];
+                document.getElementById('imagePreviews').innerHTML = '';
+                document.getElementById('imageUrls').innerHTML = `
+                    <div class="image-url-input">
+                        <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
+                        <button type="button" class="btn-sm btn-success" onclick="addImageUrlField()">+</button>
+                    </div>
+                `;
+                
+                showSection('products');
+                await loadProducts();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error saving to Supabase: ' + error.message);
+            } finally {
+                saveBtn.textContent = originalText;
+                saveBtn.disabled = false;
+            }
+        });
+        
+        // ============================================
+        // DELETE PRODUCT
+        // ============================================
+        async function deleteProduct(id) {
+            if (!confirm('Delete this product?')) return;
+            
+            try {
+                const { error } = await supabase
+                    .from('products')
+                    .delete()
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
+                await loadProducts();
+                alert('Product deleted');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error deleting product');
             }
         }
         
+        // ============================================
+        // LOGOUT
+        // ============================================
         function logout() {
             sessionStorage.clear();
             window.location.href = 'login.html';
         }
         
-        // Initialize
-        updateDashboard();
-        updateCategoryCounts();
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+        });
     </script>
 </body>
 </html>
