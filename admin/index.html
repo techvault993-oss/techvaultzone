@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Keep your existing styles here */
         * {
             margin: 0;
             padding: 0;
@@ -367,17 +368,6 @@
             background: #dc3545;
         }
         
-        .primary-badge {
-            position: absolute;
-            bottom: 2px;
-            left: 2px;
-            background: #28a745;
-            color: white;
-            font-size: 10px;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        
         .image-url-input {
             display: flex;
             gap: 0.5rem;
@@ -422,6 +412,37 @@
             from { transform: translateX(100%); }
             to { transform: translateX(0); }
         }
+        
+        .or-divider {
+            text-align: center;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: #ddd;
+        }
+        
+        .or-divider::before {
+            left: 0;
+        }
+        
+        .or-divider::after {
+            right: 0;
+        }
+        
+        .or-divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #666;
+            font-size: 0.875rem;
+        }
     </style>
 </head>
 <body>
@@ -442,14 +463,15 @@
             <a onclick="showSection('products')"><i class="fas fa-box"></i> All Products</a>
             <a onclick="showSection('add-product')"><i class="fas fa-plus-circle"></i> Add Product</a>
             <a onclick="showSection('categories')"><i class="fas fa-tags"></i> Categories</a>
-            <a onclick="showSection('security')"><i class="fas fa-shield-alt"></i> Security</a>
+            <a onclick="showSection('messages')"><i class="fas fa-envelope"></i> Messages</a>
+            <a onclick="showSection('subscribers')"><i class="fas fa-users"></i> Subscribers</a>
+            <a onclick="showSection('settings')"><i class="fas fa-cog"></i> Settings</a>
         </div>
         
         <div class="main">
             <!-- Dashboard Section -->
             <div id="dashboard-section" class="section active">
                 <h1>Dashboard</h1>
-                
                 <div class="stats">
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-box"></i></div>
@@ -466,10 +488,17 @@
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon"><i class="fab fa-amazon"></i></div>
+                        <div class="stat-icon"><i class="fas fa-envelope"></i></div>
                         <div class="stat-info">
-                            <h3>Store ID</h3>
-                            <div class="number">techvaultzone-20</div>
+                            <h3>Messages</h3>
+                            <div class="number" id="totalMessages">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-info">
+                            <h3>Subscribers</h3>
+                            <div class="number" id="totalSubscribers">0</div>
                         </div>
                     </div>
                 </div>
@@ -485,14 +514,11 @@
                                 <th>Image</th>
                                 <th>Title</th>
                                 <th>Price</th>
-                                <th>Amazon Link</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="recentProductsList">
-                            <tr>
-                                <td colspan="5" style="text-align: center;">No products yet. Add your first product!</td>
-                            </tr>
+                            <tr><td colspan="4" style="text-align: center;">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -501,7 +527,6 @@
             <!-- Products Section -->
             <div id="products-section" class="section">
                 <h1>All Products</h1>
-                
                 <div class="card">
                     <div class="card-header">
                         <h2>Manage Products</h2>
@@ -514,15 +539,12 @@
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Price</th>
-                                <th>Images</th>
                                 <th>Amazon Link</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="productsList">
-                            <tr>
-                                <td colspan="7" style="text-align: center;">Loading products...</td>
-                            </tr>
+                            <tr><td colspan="6" style="text-align: center;">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -531,141 +553,160 @@
             <!-- Add Product Section -->
             <div id="add-product-section" class="section">
                 <h1>Add New Product</h1>
-                
                 <div class="card">
                     <div class="amazon-info">
                         <p><i class="fab fa-amazon"></i> <strong>Your Amazon Store ID:</strong> techvaultzone-20</p>
-                        <p style="font-size: 0.875rem; margin-top: 0.5rem;">Images are uploaded to Supabase cloud storage</p>
                     </div>
                     
                     <form id="productForm">
                         <div class="form-group">
                             <label for="title">Product Title *</label>
-                            <input type="text" id="title" required placeholder="e.g., Garmin Quatix 8 Marine GPS Smartwatch">
+                            <input type="text" id="title" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="category">Category *</label>
                             <select id="category" required>
                                 <option value="">Select Category</option>
-                                <option value="smartphones">Smartphones</option>
-                                <option value="laptops">Laptops</option>
-                                <option value="headphones">Headphones</option>
-                                <option value="cameras">Cameras</option>
-                                <option value="smartwatches">Smartwatches</option>
-                                <option value="tablets">Tablets</option>
-                                <option value="gaming">Gaming</option>
-                                <option value="smart-home">Smart Home</option>
-                                <option value="accessories">Accessories</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
                             <label for="description">Description *</label>
-                            <textarea id="description" rows="4" required placeholder="Product description..."></textarea>
+                            <textarea id="description" rows="4" required></textarea>
                         </div>
                         
                         <div class="form-group">
                             <label for="price">Price ($) *</label>
-                            <input type="number" id="price" step="0.01" required placeholder="1199.99">
+                            <input type="number" id="price" step="0.01" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="salePrice">Sale Price ($) (Optional)</label>
-                            <input type="number" id="salePrice" step="0.01" placeholder="949.99">
-                        </div>
-                        
-                        <!-- IMAGE UPLOAD SECTION -->
-                        <div class="form-group">
-                            <label>Product Images (Upload to Supabase)</label>
-                            
-                            <div class="image-upload-area" onclick="document.getElementById('imageUpload').click()">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Click to upload images to cloud</p>
-                                <p style="font-size: 0.75rem; color: #999;">Images stored permanently on Supabase</p>
-                            </div>
-                            <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(this)">
-                            
-                            <!-- Upload Progress -->
-                            <div id="uploadProgress" style="display: none; margin: 10px 0;">
-                                <div style="background: #e0e0e0; border-radius: 10px; height: 20px;">
-                                    <div id="progressBar" style="background: #0066FF; width: 0%; height: 20px; border-radius: 10px; color: white; text-align: center; font-size: 12px; line-height: 20px;">0%</div>
-                                </div>
-                            </div>
-                            
-                            <!-- Image Previews -->
-                            <div id="imagePreviews" class="image-preview-container"></div>
-                            
-                            <div class="or-divider">
-                                <span>OR Add Image URLs</span>
-                            </div>
-                            
-                            <div id="imageUrls">
-                                <div class="image-url-input">
-                                    <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
-                                    <button type="button" class="btn-sm btn-success" onclick="addImageUrlField()">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- AMAZON LINK -->
-                        <div class="form-group">
-                            <label for="amazonLink">Your Amazon Affiliate Link *</label>
-                            <input type="url" id="amazonLink" required placeholder="https://amzn.to/47xLIz4">
+                            <label for="salePrice">Sale Price ($)</label>
+                            <input type="number" id="salePrice" step="0.01">
                         </div>
                         
                         <div class="form-group">
-                            <label for="badge">Badge (Optional)</label>
-                            <input type="text" id="badge" placeholder="Amazon's Choice, Best Seller">
+                            <label for="amazonLink">Amazon Affiliate Link *</label>
+                            <input type="url" id="amazonLink" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="rating">Rating (0-5)</label>
-                            <input type="number" id="rating" step="0.1" min="0" max="5" value="4.6">
+                            <label for="badge">Badge</label>
+                            <input type="text" id="badge">
                         </div>
                         
                         <div class="form-group">
-                            <label>Features (One per line)</label>
-                            <textarea id="features" rows="4" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"></textarea>
+                            <label for="rating">Rating</label>
+                            <input type="number" id="rating" step="0.1" min="0" max="5" value="4.5">
                         </div>
                         
-                        <button type="submit" class="btn">Save Product to Supabase</button>
+                        <div class="form-group">
+                            <label>Features (one per line)</label>
+                            <textarea id="features" rows="4"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Save Product</button>
                     </form>
                 </div>
             </div>
             
             <!-- Categories Section -->
             <div id="categories-section" class="section">
-                <h1>Manage Categories</h1>
+                <h1>Categories</h1>
                 <div class="card">
-                    <p>Categories are managed in the database.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Products</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesList">
+                            <tr><td colspan="3" style="text-align: center;">Loading...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             
-            <!-- Security Section -->
-            <div id="security-section" class="section">
-                <h1>Security Settings</h1>
+            <!-- Messages Section -->
+            <div id="messages-section" class="section">
+                <h1>Messages</h1>
                 <div class="card">
-                    <p>Session expires in: <span id="sessionTimer">30:00</span></p>
-                    <button class="btn btn-success" onclick="extendSession()">Extend Session</button>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messagesList">
+                            <tr><td colspan="4" style="text-align: center;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Subscribers Section -->
+            <div id="subscribers-section" class="section">
+                <h1>Subscribers</h1>
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subscribersList">
+                            <tr><td colspan="2" style="text-align: center;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Settings Section -->
+            <div id="settings-section" class="section">
+                <h1>Settings</h1>
+                <div class="card">
+                    <form id="settingsForm">
+                        <div class="form-group">
+                            <label>Site Name</label>
+                            <input type="text" id="siteName">
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Email</label>
+                            <input type="email" id="contactEmail">
+                        </div>
+                        <div class="form-group">
+                            <label>Amazon Tag</label>
+                            <input type="text" id="amazonTag">
+                        </div>
+                        <button type="submit" class="btn">Save Settings</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="session-warning" id="sessionWarning">
-        <i class="fas fa-clock"></i> Session expires in 5 minutes
-    </div>
 
-    <!-- Supabase Scripts -->
+    <!-- ONLY ONE Supabase script import -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
         // ============================================
-        // SUPABASE CONFIGURATION
+        // SUPABASE CONFIGURATION - SINGLE DECLARATION
         // ============================================
         const SUPABASE_URL = 'https://eyigxuzyciytohrclugy.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5aWd4dXp5Y2l5dG9ocmNsdWd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMzA4ODgsImV4cCI6MjA4ODYwNjg4OH0.-l10eOlJR4M5SXcq-Qlo9Ga1tDJkVZkM-9VczcOhDyg';
         
+        // SINGLE supabase instance - THIS IS THE ONLY ONE
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Test if supabase is working
+        console.log('Supabase initialized:', supabase ? 'YES' : 'NO');
         
         // ============================================
         // SECURITY CHECK
@@ -684,37 +725,6 @@
         // GLOBAL VARIABLES
         // ============================================
         let uploadedFiles = [];
-        let imageUrlList = [];
-        let products = [];
-        
-        // ============================================
-        // SESSION MANAGEMENT
-        // ============================================
-        let sessionTimer = setInterval(() => {
-            const loginTime = parseInt(sessionStorage.getItem('adminLoginTime'));
-            const elapsed = Date.now() - loginTime;
-            const remaining = 30 * 60 * 1000 - elapsed;
-            
-            if (remaining <= 0) {
-                clearInterval(sessionTimer);
-                logout();
-            } else {
-                const minutes = Math.floor(remaining / 60000);
-                const seconds = Math.floor((remaining % 60000) / 1000);
-                const timerEl = document.getElementById('sessionTimer');
-                if (timerEl) {
-                    timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }
-                
-                if (remaining <= 5 * 60 * 1000) {
-                    document.getElementById('sessionWarning').classList.add('show');
-                }
-            }
-        }, 1000);
-        
-        function extendSession() {
-            sessionStorage.setItem('adminLoginTime', Date.now());
-        }
         
         // ============================================
         // UI FUNCTIONS
@@ -727,113 +737,77 @@
             document.getElementById(section + '-section').classList.add('active');
             
             if (section === 'products') loadProducts();
-            if (section === 'dashboard') loadProducts();
+            if (section === 'dashboard') loadDashboard();
+            if (section === 'categories') loadCategories();
+            if (section === 'messages') loadMessages();
+            if (section === 'subscribers') loadSubscribers();
+            if (section === 'settings') loadSettings();
         }
         
         // ============================================
-        // SUPABASE IMAGE UPLOAD
+        // LOAD CATEGORIES FOR DROPDOWN
         // ============================================
-        async function uploadImageToSupabase(file) {
-            const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '-')}`;
-            
-            const { data, error } = await supabase.storage
-                .from('product-images')
-                .upload(fileName, file);
-            
-            if (error) throw error;
-            
-            const { data: { publicUrl } } = supabase.storage
-                .from('product-images')
-                .getPublicUrl(fileName);
-            
-            return publicUrl;
-        }
-        
-        async function handleImageUpload(input) {
-            const files = Array.from(input.files);
-            uploadedFiles = files;
-            
-            // Show previews
-            const previewContainer = document.getElementById('imagePreviews');
-            previewContainer.innerHTML = '';
-            
-            files.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'image-preview-item';
-                    previewItem.innerHTML = `
-                        <img src="${e.target.result}" alt="Preview">
-                        <div class="remove-image" onclick="removeFile(${index})">×</div>
-                    `;
-                    previewContainer.appendChild(previewItem);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-        
-        function removeFile(index) {
-            uploadedFiles.splice(index, 1);
-            displayImagePreviews();
-        }
-        
-        function displayImagePreviews() {
-            const previewContainer = document.getElementById('imagePreviews');
-            previewContainer.innerHTML = '';
-            
-            uploadedFiles.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'image-preview-item';
-                    previewItem.innerHTML = `
-                        <img src="${e.target.result}" alt="Preview">
-                        <div class="remove-image" onclick="removeFile(${index})">×</div>
-                    `;
-                    previewContainer.appendChild(previewItem);
-                };
-                reader.readAsDataURL(file);
-            });
-            
-            imageUrlList.forEach((url, index) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'image-preview-item';
-                previewItem.innerHTML = `
-                    <img src="${url}" alt="URL Image">
-                    <div class="remove-image" onclick="removeUrl(${index})">×</div>
-                `;
-                previewContainer.appendChild(previewItem);
-            });
-        }
-        
-        function removeUrl(index) {
-            imageUrlList.splice(index, 1);
-            displayImagePreviews();
-        }
-        
-        function addImageUrlField() {
-            const container = document.getElementById('imageUrls');
-            const newInput = document.createElement('div');
-            newInput.className = 'image-url-input';
-            newInput.innerHTML = `
-                <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
-                <button type="button" class="btn-sm btn-danger" onclick="this.parentElement.remove()">×</button>
-            `;
-            container.appendChild(newInput);
-        }
-        
-        function collectImageUrls() {
-            const urls = [];
-            document.querySelectorAll('.imageUrlInput').forEach(input => {
-                if (input.value.trim()) {
-                    urls.push(input.value.trim());
+        async function loadCategoryOptions() {
+            try {
+                const { data, error } = await supabase
+                    .from('categories')
+                    .select('*')
+                    .order('name');
+                
+                if (error) throw error;
+                
+                const select = document.getElementById('category');
+                if (select) {
+                    select.innerHTML = '<option value="">Select Category</option>';
+                    data.forEach(cat => {
+                        select.innerHTML += `<option value="${cat.slug}">${cat.name}</option>`;
+                    });
                 }
-            });
-            return urls;
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
         }
         
         // ============================================
-        // PRODUCT FUNCTIONS
+        // LOAD DASHBOARD
+        // ============================================
+        async function loadDashboard() {
+            try {
+                const { data: products, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                document.getElementById('totalProducts').textContent = products?.length || 0;
+                
+                const recentList = document.getElementById('recentProductsList');
+                if (!recentList) return;
+                
+                if (!products || products.length === 0) {
+                    recentList.innerHTML = '<tr><td colspan="4" style="text-align: center;">No products yet</td></tr>';
+                    return;
+                }
+                
+                const recent = products.slice(0, 5);
+                recentList.innerHTML = recent.map(p => `
+                    <tr>
+                        <td><img src="${p.image_urls?.[0] || p.image_url || 'https://via.placeholder.com/50'}" class="product-image"></td>
+                        <td>${p.title}</td>
+                        <td>$${p.sale_price || p.price}</td>
+                        <td><button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button></td>
+                    </tr>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                document.getElementById('recentProductsList').innerHTML = '<tr><td colspan="4" style="text-align: center;">Error loading products</td></tr>';
+            }
+        }
+        
+        // ============================================
+        // LOAD PRODUCTS
         // ============================================
         async function loadProducts() {
             try {
@@ -844,129 +818,57 @@
                 
                 if (error) throw error;
                 
-                products = data || [];
-                displayProducts();
-                updateDashboard();
-                updateCategoryCounts();
+                const list = document.getElementById('productsList');
+                if (!list) return;
+                
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<tr><td colspan="6" style="text-align: center;">No products yet</td></tr>';
+                    return;
+                }
+                
+                list.innerHTML = data.map(p => `
+                    <tr>
+                        <td><img src="${p.image_urls?.[0] || p.image_url || 'https://via.placeholder.com/50'}" class="product-image"></td>
+                        <td>${p.title}</td>
+                        <td>${p.category}</td>
+                        <td>$${p.sale_price || p.price}</td>
+                        <td><a href="${p.amazon_link}" target="_blank" class="btn-sm btn-amazon">Link</a></td>
+                        <td><button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button></td>
+                    </tr>
+                `).join('');
+                
             } catch (error) {
                 console.error('Error loading products:', error);
-                document.getElementById('productsList').innerHTML = '<tr><td colspan="7" style="text-align: center;">Error loading products</td></tr>';
+                document.getElementById('productsList').innerHTML = '<tr><td colspan="6" style="text-align: center;">Error loading products</td></tr>';
             }
-        }
-        
-        function displayProducts() {
-            const list = document.getElementById('productsList');
-            
-            if (products.length === 0) {
-                list.innerHTML = '<tr><td colspan="7" style="text-align: center;">No products yet</td></tr>';
-                return;
-            }
-            
-            list.innerHTML = products.map(p => `
-                <tr>
-                    <td><img src="${p.image_urls?.[0] || p.image_url || 'https://via.placeholder.com/50'}" class="product-image"></td>
-                    <td>${p.title}</td>
-                    <td>${p.category}</td>
-                    <td>$${p.price}</td>
-                    <td>${p.image_urls?.length || 1}</td>
-                    <td>
-                        <a href="${p.amazon_link}" target="_blank" class="btn-sm btn-amazon">Link</a>
-                    </td>
-                    <td>
-                        <button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
-        function updateDashboard() {
-            document.getElementById('totalProducts').textContent = products.length;
-            
-            const recentList = document.getElementById('recentProductsList');
-            if (products.length === 0) {
-                recentList.innerHTML = '<tr><td colspan="5" style="text-align: center;">No products yet</td></tr>';
-                return;
-            }
-            
-            const recent = products.slice(0, 5);
-            recentList.innerHTML = recent.map(p => `
-                <tr>
-                    <td><img src="${p.image_urls?.[0] || p.image_url}" class="product-image"></td>
-                    <td>${p.title}</td>
-                    <td>$${p.price}</td>
-                    <td><a href="${p.amazon_link}" target="_blank" class="btn-sm btn-amazon">View</a></td>
-                    <td><button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button></td>
-                </tr>
-            `).join('');
-        }
-        
-        function updateCategoryCounts() {
-            const counts = {};
-            products.forEach(p => {
-                counts[p.category] = (counts[p.category] || 0) + 1;
-            });
-            
-            document.querySelectorAll('[id^="count-"]').forEach(el => {
-                const cat = el.id.replace('count-', '');
-                el.textContent = counts[cat] || 0;
-            });
         }
         
         // ============================================
-        // SAVE PRODUCT TO SUPABASE
+        // SAVE PRODUCT
         // ============================================
-        document.getElementById('productForm').addEventListener('submit', async function(e) {
+        document.getElementById('productForm')?.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const saveBtn = this.querySelector('button[type="submit"]');
-            const originalText = saveBtn.textContent;
-            saveBtn.textContent = 'Uploading to Supabase...';
-            saveBtn.disabled = true;
+            const title = document.getElementById('title').value;
+            const slug = title.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
+            const features = document.getElementById('features').value.split('\n').filter(f => f.trim());
+            
+            const product = {
+                title: title,
+                slug: slug,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                price: parseFloat(document.getElementById('price').value),
+                sale_price: document.getElementById('salePrice').value ? parseFloat(document.getElementById('salePrice').value) : null,
+                image_url: 'https://via.placeholder.com/300',
+                image_urls: ['https://via.placeholder.com/300'],
+                amazon_link: document.getElementById('amazonLink').value,
+                badge: document.getElementById('badge').value || null,
+                rating: parseFloat(document.getElementById('rating').value),
+                features: features
+            };
             
             try {
-                // Upload images to Supabase
-                const imageUrls = [...collectImageUrls()];
-                
-                if (uploadedFiles.length > 0) {
-                    for (let file of uploadedFiles) {
-                        const url = await uploadImageToSupabase(file);
-                        if (url) imageUrls.push(url);
-                    }
-                }
-                
-                if (imageUrls.length === 0) {
-                    imageUrls.push('https://via.placeholder.com/300');
-                }
-                
-                // Create slug
-                const title = document.getElementById('title').value;
-                const slug = title.toLowerCase()
-                    .replace(/[^\w\s]/g, '')
-                    .replace(/\s+/g, '-');
-                
-                // Features
-                const features = document.getElementById('features').value
-                    .split('\n')
-                    .filter(f => f.trim());
-                
-                // Product object
-                const product = {
-                    title: title,
-                    slug: slug,
-                    category: document.getElementById('category').value,
-                    description: document.getElementById('description').value,
-                    price: parseFloat(document.getElementById('price').value),
-                    sale_price: document.getElementById('salePrice').value ? parseFloat(document.getElementById('salePrice').value) : null,
-                    image_url: imageUrls[0],
-                    image_urls: imageUrls,
-                    amazon_link: document.getElementById('amazonLink').value,
-                    badge: document.getElementById('badge').value || null,
-                    rating: parseFloat(document.getElementById('rating').value),
-                    features: features,
-                    review_count: 0
-                };
-                
-                // Save to Supabase
                 const { data, error } = await supabase
                     .from('products')
                     .insert([product])
@@ -974,29 +876,14 @@
                 
                 if (error) throw error;
                 
-                alert('Product saved to Supabase successfully!');
-                
-                // Reset form
+                alert('Product saved successfully!');
                 this.reset();
-                uploadedFiles = [];
-                imageUrlList = [];
-                document.getElementById('imagePreviews').innerHTML = '';
-                document.getElementById('imageUrls').innerHTML = `
-                    <div class="image-url-input">
-                        <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
-                        <button type="button" class="btn-sm btn-success" onclick="addImageUrlField()">+</button>
-                    </div>
-                `;
-                
                 showSection('products');
-                await loadProducts();
+                loadProducts();
                 
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error saving to Supabase: ' + error.message);
-            } finally {
-                saveBtn.textContent = originalText;
-                saveBtn.disabled = false;
+                alert('Error saving product: ' + error.message);
             }
         });
         
@@ -1015,12 +902,162 @@
                 if (error) throw error;
                 
                 await loadProducts();
+                await loadDashboard();
                 alert('Product deleted');
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error deleting product');
             }
         }
+        
+        // ============================================
+        // LOAD CATEGORIES
+        // ============================================
+        async function loadCategories() {
+            try {
+                const { data, error } = await supabase
+                    .from('categories')
+                    .select('*')
+                    .order('name');
+                
+                if (error) throw error;
+                
+                const list = document.getElementById('categoriesList');
+                if (!list) return;
+                
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<tr><td colspan="3" style="text-align: center;">No categories</td></tr>';
+                    return;
+                }
+                
+                list.innerHTML = data.map(c => `
+                    <tr>
+                        <td>${c.name}</td>
+                        <td>${c.slug}</td>
+                        <td>0</td>
+                    </tr>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+        
+        // ============================================
+        // LOAD MESSAGES
+        // ============================================
+        async function loadMessages() {
+            try {
+                const { data, error } = await supabase
+                    .from('contact_messages')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(20);
+                
+                if (error) throw error;
+                
+                const list = document.getElementById('messagesList');
+                if (!list) return;
+                
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<tr><td colspan="4" style="text-align: center;">No messages</td></tr>';
+                    return;
+                }
+                
+                list.innerHTML = data.map(m => `
+                    <tr>
+                        <td>${m.name}</td>
+                        <td>${m.email}</td>
+                        <td>${m.subject || ''}</td>
+                        <td>${new Date(m.created_at).toLocaleDateString()}</td>
+                    </tr>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+        
+        // ============================================
+        // LOAD SUBSCRIBERS
+        // ============================================
+        async function loadSubscribers() {
+            try {
+                const { data, error } = await supabase
+                    .from('subscribers')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                const list = document.getElementById('subscribersList');
+                if (!list) return;
+                
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<tr><td colspan="2" style="text-align: center;">No subscribers</td></tr>';
+                    return;
+                }
+                
+                list.innerHTML = data.map(s => `
+                    <tr>
+                        <td>${s.email}</td>
+                        <td>${new Date(s.created_at).toLocaleDateString()}</td>
+                    </tr>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading subscribers:', error);
+            }
+        }
+        
+        // ============================================
+        // LOAD SETTINGS
+        // ============================================
+        async function loadSettings() {
+            try {
+                const { data, error } = await supabase
+                    .from('site_settings')
+                    .select('*')
+                    .eq('id', 1)
+                    .single();
+                
+                if (error) throw error;
+                
+                if (data) {
+                    document.getElementById('siteName').value = data.site_name || '';
+                    document.getElementById('contactEmail').value = data.contact_email || '';
+                    document.getElementById('amazonTag').value = data.amazon_tag || '';
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+        
+        // ============================================
+        // SAVE SETTINGS
+        // ============================================
+        document.getElementById('settingsForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const settings = {
+                site_name: document.getElementById('siteName').value,
+                contact_email: document.getElementById('contactEmail').value,
+                amazon_tag: document.getElementById('amazonTag').value
+            };
+            
+            try {
+                const { error } = await supabase
+                    .from('site_settings')
+                    .update(settings)
+                    .eq('id', 1);
+                
+                if (error) throw error;
+                alert('Settings saved!');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error saving settings');
+            }
+        });
         
         // ============================================
         // LOGOUT
@@ -1034,7 +1071,9 @@
         // INITIALIZE
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            loadProducts();
+            console.log('Admin panel loaded');
+            loadCategoryOptions();
+            loadDashboard();
         });
     </script>
 </body>
