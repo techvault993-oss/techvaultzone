@@ -7,10 +7,12 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- IMPORTANT: This link was missing -->
     <link rel="stylesheet" href="css/style.css">
     <style>
+        /* Additional styles for category page */
         .category-header {
             padding: 8rem 0 2rem;
             text-align: center;
@@ -28,28 +30,149 @@
             margin: 0 auto;
         }
         
-        .message-box {
+        .no-products {
             text-align: center;
             padding: 4rem;
+            color: var(--gray-500);
+            font-size: 1.2rem;
             background: var(--white);
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-sm);
-            margin: 2rem 0;
         }
         
-        .message-box i {
-            font-size: 4rem;
+        /* Product card styles (already in style.css but ensuring they apply) */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+        
+        .product-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .product-content {
+            padding: 1.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .current-price {
+            font-size: 1.5rem;
+            font-weight: 800;
             color: var(--primary);
-            margin-bottom: 1rem;
         }
         
-        .message-box h2 {
-            margin-bottom: 1rem;
+        .old-price {
+            font-size: 1rem;
+            color: var(--gray-400);
+            text-decoration: line-through;
         }
         
-        .message-box p {
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stars {
+            color: #FFB800;
+        }
+        
+        .rating-count {
             color: var(--gray-600);
-            margin-bottom: 2rem;
+            font-size: 0.875rem;
+        }
+        
+        .product-footer {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-view {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        
+        .btn-view:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-amazon {
+            flex: 1;
+            padding: 0.75rem;
+            background: #FF9900;
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+        
+        .btn-amazon:hover {
+            background: #E68900;
         }
     </style>
 </head>
@@ -67,13 +190,16 @@
                 <div class="nav-links" id="navLinks">
                     <a href="index.html">Home</a>
                     <a href="categories.html">Categories</a>
+                    <a href="deals.html">Deals</a>
+                    <a href="reviews.html">Reviews</a>
                     <a href="about.html">About</a>
                     <a href="contact.html">Contact</a>
                 </div>
             </div>
             <div class="nav-right">
-                <button class="theme-toggle" id="themeToggle">
+                <button class="theme-toggle" id="themeToggle" onclick="handleThemeClick(event)">
                     <i class="fas fa-moon"></i>
+                    <span class="secret-dot"></span>
                 </button>
                 <a href="admin/login.html" class="admin-link">
                     <i class="fas fa-cog"></i>
@@ -91,11 +217,8 @@
 
     <section class="featured-products">
         <div class="container">
-            <div class="message-box">
-                <i class="fas fa-box-open"></i>
-                <h2>No Products Yet</h2>
-                <p>Products in this category will appear here once added through the admin panel.</p>
-                <a href="categories.html" class="btn btn-outline">Browse Other Categories</a>
+            <div class="products-grid" id="categoryProducts">
+                <!-- Products will be loaded here -->
             </div>
         </div>
     </section>
@@ -108,12 +231,13 @@
                         <img src="images/logo.png" alt="TechVaultZone" style="height: 30px;">
                         <span>TechVaultZone</span>
                     </div>
-                    <p>Your trusted source for honest tech reviews and the best deals on the latest technology products.</p>
+                    <p>Your trusted source for honest tech reviews.</p>
                     <div class="social-links">
-                        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.youtube.com/@TechVautZone" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/techv_ault/?hl=en" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61585092247422" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.pinterest.com/techvaultzone" target="_blank"><i class="fab fa-pinterest"></i></a>
+                        <a href="https://www.tiktok.com/@techvaultzone" target="_blank"><i class="fab fa-tiktok"></i></a>
                     </div>
                 </div>
                 <div class="footer-col">
@@ -132,42 +256,175 @@
                         <li><a href="category.html?slug=laptops">Laptops</a></li>
                         <li><a href="category.html?slug=headphones">Headphones</a></li>
                         <li><a href="category.html?slug=cameras">Cameras</a></li>
+                        <li><a href="category.html?slug=smartwatches">Smartwatches</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Contact</h4>
                     <ul class="contact-info">
-                        <li><i class="fas fa-envelope"></i> techvaultzone@gmail.com</li>
-                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-map-marker-alt"></i> San Francisco, CA</li>
+                        <li><i class="fas fa-envelope"></i> techvault993@gmail.com</li>
+                        <li><i class="fas fa-globe"></i> techvaultzone.netlify.app</li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 TechVaultZone. All rights reserved. Built with ❤️ by Abdul Malik Lakho</p>
+                <p>&copy; 2024 TechVaultZone. All rights reserved.</p>
+                <p class="amazon-disclosure">As an Amazon Associate, I earn from qualifying purchases. (Store ID: techvaultzone-20)</p>
             </div>
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
     <script>
-        // Update category name from URL
-        const params = new URLSearchParams(window.location.search);
-        const slug = params.get('slug');
+        // ============================================
+        // CATEGORY PAGE SCRIPT
+        // ============================================
         
+        // Get category from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug') || 'smartphones';
+        
+        // Category data
         const categories = {
             smartphones: { name: 'Smartphones', desc: 'Latest mobile phones and accessories' },
             laptops: { name: 'Laptops', desc: 'Powerful laptops for work and play' },
             headphones: { name: 'Headphones', desc: 'Wireless earbuds and headphones' },
             cameras: { name: 'Cameras', desc: 'DSLR, mirrorless and action cameras' },
-            'smart-home': { name: 'Smart Home', desc: 'Smart speakers, lights and more' },
-            gaming: { name: 'Gaming', desc: 'Consoles, controllers and gaming gear' }
+            smartwatches: { name: 'Smartwatches', desc: 'Wearables and fitness trackers' },
+            tablets: { name: 'Tablets', desc: 'iPads and Android tablets' },
+            gaming: { name: 'Gaming', desc: 'Consoles, controllers and gaming gear' },
+            'smart-home': { name: 'Smart Home', desc: 'Smart speakers, lights and security' },
+            accessories: { name: 'Accessories', desc: 'Chargers, cases and tech accessories' }
         };
         
-        if (slug && categories[slug]) {
+        // Update category name in header
+        if (categories[slug]) {
             document.getElementById('categoryName').innerHTML = categories[slug].name;
             document.getElementById('categoryDesc').innerHTML = categories[slug].desc;
         }
+        
+        // Load products for this category
+        function loadCategoryProducts() {
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            const grid = document.getElementById('categoryProducts');
+            
+            // Filter products by category
+            const filtered = products.filter(p => p.category === slug);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="no-products">No products in this category yet. Check back soon!</div>';
+                return;
+            }
+            
+            // Generate HTML for each product
+            grid.innerHTML = filtered.map(p => {
+                // Get primary image
+                const primaryImage = p.images && p.images.length > 0 ? p.images[0] : (p.image || 'https://via.placeholder.com/300');
+                
+                // Generate star rating
+                const rating = p.rating || 0;
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 >= 0.5;
+                let stars = '';
+                for (let i = 0; i < fullStars; i++) stars += '<i class="fas fa-star"></i>';
+                if (halfStar) stars += '<i class="fas fa-star-half-alt"></i>';
+                for (let i = 0; i < 5 - fullStars - (halfStar ? 1 : 0); i++) stars += '<i class="far fa-star"></i>';
+                
+                // Create product slug from title
+                const productSlug = p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                
+                return `
+                    <div class="product-card">
+                        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+                        <img src="${primaryImage}" alt="${p.title}" class="product-image" onerror="this.src='https://via.placeholder.com/300'">
+                        <div class="product-content">
+                            <h3 class="product-title">${p.title}</h3>
+                            <div class="product-price">
+                                <span class="current-price">$${(p.salePrice || p.price).toFixed(2)}</span>
+                                ${p.salePrice ? `<span class="old-price">$${p.price.toFixed(2)}</span>` : ''}
+                            </div>
+                            <div class="product-rating">
+                                <div class="stars">${stars}</div>
+                                <span class="rating-count">(${p.reviewCount || 0})</span>
+                            </div>
+                            <div class="product-footer">
+                                <a href="product.html?slug=${productSlug}" class="btn-view">View Details</a>
+                                <a href="${p.amazonLink}" target="_blank" class="btn-amazon"><i class="fab fa-amazon"></i> Buy</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // ============================================
+        // THEME TOGGLE & SECRET ADMIN
+        // ============================================
+        
+        let themeClickCount = 0;
+        let clickTimer;
+        
+        function handleThemeClick(e) {
+            // Normal theme toggle
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            document.getElementById('themeToggle').innerHTML = newTheme === 'light' ? 
+                '<i class="fas fa-moon"></i><span class="secret-dot"></span>' : 
+                '<i class="fas fa-sun"></i><span class="secret-dot"></span>';
+            
+            // Secret admin detection
+            themeClickCount++;
+            
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
+                if (themeClickCount >= 3) {
+                    window.location.href = 'admin/login.html';
+                }
+                themeClickCount = 0;
+            }, 500);
+        }
+        
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.innerHTML = savedTheme === 'light' ? 
+                    '<i class="fas fa-moon"></i><span class="secret-dot"></span>' : 
+                    '<i class="fas fa-sun"></i><span class="secret-dot"></span>';
+            }
+        }
+        
+        // Mobile menu
+        function initMobileMenu() {
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (menuBtn && navLinks) {
+                menuBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+        }
+        
+        // Active nav link
+        function setActiveNav() {
+            const currentPage = 'category.html';
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            setActiveNav();
+            initTheme();
+            initMobileMenu();
+            loadCategoryProducts();
+        });
     </script>
 </body>
 </html>

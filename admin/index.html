@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Same styles as before - keep existing dashboard CSS */
         * {
             margin: 0;
             padding: 0;
@@ -54,17 +53,6 @@
             gap: 1rem;
         }
         
-        .security-badge {
-            background: #28a745;
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        
         .logout-btn {
             padding: 0.5rem 1rem;
             background: #dc3545;
@@ -72,6 +60,11 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #c82333;
         }
         
         .container {
@@ -96,6 +89,7 @@
             color: #666;
             text-decoration: none;
             transition: all 0.3s;
+            cursor: pointer;
         }
         
         .sidebar a i {
@@ -121,11 +115,18 @@
         
         .section.active {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         h1 {
             margin-bottom: 2rem;
             color: #333;
+            font-size: 2rem;
         }
         
         .stats {
@@ -143,12 +144,18 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
         }
         
         .stat-icon {
             width: 50px;
             height: 50px;
-            background: #0066FF;
+            background: linear-gradient(135deg, #0066FF, #00C3FF);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -182,101 +189,56 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .card-header h2 {
+            font-size: 1.25rem;
+            color: #333;
         }
         
         .btn {
             padding: 0.5rem 1rem;
-            background: #0066FF;
+            background: linear-gradient(135deg, #0066FF, #00C3FF);
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn:hover {
-            background: #0052CC;
-        }
-        
-        .image-upload-area {
-            border: 2px dashed #0066FF;
-            padding: 2rem;
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             transition: all 0.3s;
         }
         
-        .image-upload-area:hover {
-            background: #f0f8ff;
-            border-color: #00C3FF;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,102,255,0.3);
         }
         
-        .image-upload-area i {
-            font-size: 3rem;
-            color: #0066FF;
-            margin-bottom: 1rem;
+        .btn-danger {
+            background: #dc3545;
         }
         
-        .image-preview {
-            max-width: 200px;
-            max-height: 200px;
-            margin: 1rem auto;
-            display: none;
+        .btn-danger:hover {
+            background: #c82333;
         }
         
-        .image-preview img {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        .btn-success {
+            background: #28a745;
         }
         
-        .tab-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
+        .btn-success:hover {
+            background: #218838;
         }
         
-        .tab-btn {
-            padding: 0.5rem 1rem;
-            background: #f0f0f0;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .btn-amazon {
+            background: #FF9900;
         }
         
-        .tab-btn.active {
-            background: #0066FF;
-            color: white;
-        }
-        
-        .upload-tab, .url-tab {
-            display: none;
-        }
-        
-        .upload-tab.active, .url-tab.active {
-            display: block;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .btn-amazon:hover {
+            background: #E68900;
         }
         
         table {
@@ -289,6 +251,7 @@
             padding: 1rem;
             background: #f8f9fa;
             border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
         }
         
         td {
@@ -309,12 +272,155 @@
             margin-right: 0.25rem;
         }
         
-        .btn-edit {
-            background: #28a745;
+        .form-group {
+            margin-bottom: 1.5rem;
         }
         
-        .btn-delete {
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0066FF;
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
+        }
+        
+        .image-upload-area {
+            border: 2px dashed #0066FF;
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9fa;
+            margin-bottom: 1rem;
+        }
+        
+        .image-upload-area:hover {
+            background: #e9ecef;
+            border-color: #00C3FF;
+        }
+        
+        .image-upload-area i {
+            font-size: 2rem;
+            color: #0066FF;
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .image-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #0066FF;
+        }
+        
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-preview-item .remove-image {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: rgba(220, 53, 69, 0.8);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .image-preview-item .remove-image:hover {
             background: #dc3545;
+        }
+        
+        .primary-badge {
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            background: #28a745;
+            color: white;
+            font-size: 10px;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .image-url-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-url-input input {
+            flex: 1;
+        }
+        
+        .amazon-info {
+            background: #232f3e;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .amazon-info strong {
+            color: #ff9900;
+        }
+        
+        .session-warning {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffc107;
+            color: #333;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 2000;
+        }
+        
+        .session-warning.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
         }
     </style>
 </head>
@@ -325,27 +431,25 @@
             <span>TechVaultZone Admin</span>
         </div>
         <div class="user-info">
-            <span class="security-badge">
-                <i class="fas fa-shield-alt"></i>
-                <span id="sessionStatus">Secure Session</span>
-            </span>
-            <button class="logout-btn" onclick="secureLogout()">Logout</button>
+            <span><i class="fas fa-user-shield"></i> Admin</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </nav>
     
     <div class="container">
         <div class="sidebar">
-            <a href="#" onclick="showSection('dashboard')" class="active"><i class="fas fa-chart-pie"></i> Dashboard</a>
-            <a href="#" onclick="showSection('products')"><i class="fas fa-box"></i> Products</a>
-            <a href="#" onclick="showSection('add-product')"><i class="fas fa-plus"></i> Add Product</a>
-            <a href="#" onclick="showSection('amazon')"><i class="fab fa-amazon"></i> Amazon Links</a>
-            <a href="#" onclick="showSection('security')"><i class="fas fa-shield-alt"></i> Security</a>
+            <a onclick="showSection('dashboard')" class="active"><i class="fas fa-chart-pie"></i> Dashboard</a>
+            <a onclick="showSection('products')"><i class="fas fa-box"></i> All Products</a>
+            <a onclick="showSection('add-product')"><i class="fas fa-plus-circle"></i> Add Product</a>
+            <a onclick="showSection('categories')"><i class="fas fa-tags"></i> Categories</a>
+            <a onclick="showSection('security')"><i class="fas fa-shield-alt"></i> Security</a>
         </div>
         
-        <div class="main" id="main">
+        <div class="main">
             <!-- Dashboard Section -->
             <div id="dashboard-section" class="section active">
-                <h1>Secure Dashboard</h1>
+                <h1>Dashboard</h1>
+                
                 <div class="stats">
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-box"></i></div>
@@ -358,7 +462,7 @@
                         <div class="stat-icon"><i class="fas fa-tags"></i></div>
                         <div class="stat-info">
                             <h3>Categories</h3>
-                            <div class="number">6</div>
+                            <div class="number" id="totalCategories">9</div>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -372,32 +476,20 @@
                 
                 <div class="card">
                     <div class="card-header">
-                        <h2>Your Secret Answers (Remember These!)</h2>
+                        <h2>Recent Products</h2>
+                        <button class="btn" onclick="showSection('add-product')">Add New</button>
                     </div>
-                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
-                        <p><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>First Pet:</strong> ••••••• (hidden)</p>
-                        <p><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>Mother's Maiden:</strong> ••••••• (hidden)</p>
-                        <p><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>Birth City:</strong> ••••••• (hidden)</p>
-                        <p style="margin-top: 1rem; color: #666;"><i class="fas fa-info-circle"></i> These are stored only in your memory - never in the database!</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Products Section -->
-            <div id="products-section" class="section">
-                <h1>Products</h1>
-                <div class="card">
-                    <table id="productsTable">
+                    <table id="recentProductsTable">
                         <thead>
                             <tr>
                                 <th>Image</th>
                                 <th>Title</th>
-                                <th>Amazon ID</th>
                                 <th>Price</th>
+                                <th>Amazon Link</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="productsList">
+                        <tbody id="recentProductsList">
                             <tr>
                                 <td colspan="5" style="text-align: center;">No products yet. Add your first product!</td>
                             </tr>
@@ -406,47 +498,50 @@
                 </div>
             </div>
             
-            <!-- Add Product Section with Image Upload -->
+            <!-- Products Section -->
+            <div id="products-section" class="section">
+                <h1>All Products</h1>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Manage Products</h2>
+                        <button class="btn" onclick="showSection('add-product')">Add New</button>
+                    </div>
+                    <table id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Images</th>
+                                <th>Amazon Link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsList">
+                            <tr>
+                                <td colspan="7" style="text-align: center;">Loading products...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Add Product Section -->
             <div id="add-product-section" class="section">
                 <h1>Add New Product</h1>
+                
                 <div class="card">
-                    <div class="amazon-info" style="background: #232f3e; color: white; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
-                        <p><strong>Amazon Store ID:</strong> techvaultzone-20</p>
-                    </div>
-                    
-                    <div class="tab-buttons">
-                        <button class="tab-btn active" onclick="switchTab('upload')">📤 Upload Image</button>
-                        <button class="tab-btn" onclick="switchTab('url')">🔗 Image URL</button>
+                    <div class="amazon-info">
+                        <p><i class="fab fa-amazon"></i> <strong>Your Amazon Store ID:</strong> techvaultzone-20</p>
+                        <p style="font-size: 0.875rem; margin-top: 0.5rem;">Images are uploaded to Supabase cloud storage</p>
                     </div>
                     
                     <form id="productForm">
-                        <!-- Upload Tab -->
-                        <div id="upload-tab" class="upload-tab active">
-                            <div class="image-upload-area" id="dropArea" onclick="document.getElementById('fileInput').click()">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <h3>Click to upload or drag and drop</h3>
-                                <p>PNG, JPG, GIF up to 10MB</p>
-                                <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="previewImage(this)">
-                            </div>
-                            <div class="image-preview" id="imagePreview">
-                                <img src="" alt="Preview" id="previewImg">
-                                <button type="button" class="btn btn-sm" onclick="clearImage()" style="margin-top: 0.5rem;">Remove</button>
-                            </div>
-                        </div>
-                        
-                        <!-- URL Tab -->
-                        <div id="url-tab" class="url-tab">
-                            <div class="form-group">
-                                <label for="imageUrl">Image URL</label>
-                                <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
-                                <small>Use Unsplash, Amazon, or any image URL</small>
-                            </div>
-                        </div>
-                        
-                        <!-- Common Fields -->
                         <div class="form-group">
                             <label for="title">Product Title *</label>
-                            <input type="text" id="title" required>
+                            <input type="text" id="title" required placeholder="e.g., Garmin Quatix 8 Marine GPS Smartwatch">
                         </div>
                         
                         <div class="form-group">
@@ -457,40 +552,76 @@
                                 <option value="laptops">Laptops</option>
                                 <option value="headphones">Headphones</option>
                                 <option value="cameras">Cameras</option>
-                                <option value="smart-home">Smart Home</option>
+                                <option value="smartwatches">Smartwatches</option>
+                                <option value="tablets">Tablets</option>
                                 <option value="gaming">Gaming</option>
+                                <option value="smart-home">Smart Home</option>
+                                <option value="accessories">Accessories</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
                             <label for="description">Description *</label>
-                            <textarea id="description" rows="4" required></textarea>
+                            <textarea id="description" rows="4" required placeholder="Product description..."></textarea>
                         </div>
                         
                         <div class="form-group">
                             <label for="price">Price ($) *</label>
-                            <input type="number" id="price" step="0.01" required>
+                            <input type="number" id="price" step="0.01" required placeholder="1199.99">
                         </div>
                         
                         <div class="form-group">
                             <label for="salePrice">Sale Price ($) (Optional)</label>
-                            <input type="number" id="salePrice" step="0.01">
+                            <input type="number" id="salePrice" step="0.01" placeholder="949.99">
                         </div>
                         
+                        <!-- IMAGE UPLOAD SECTION -->
                         <div class="form-group">
-                            <label for="amazonId">Amazon Product ID *</label>
-                            <input type="text" id="amazonId" required placeholder="e.g., B0CHWV2WYK">
-                            <small>Find in URL: amazon.com/dp/B0CHWV2WYK</small>
+                            <label>Product Images (Upload to Supabase)</label>
+                            
+                            <div class="image-upload-area" onclick="document.getElementById('imageUpload').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload images to cloud</p>
+                                <p style="font-size: 0.75rem; color: #999;">Images stored permanently on Supabase</p>
+                            </div>
+                            <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(this)">
+                            
+                            <!-- Upload Progress -->
+                            <div id="uploadProgress" style="display: none; margin: 10px 0;">
+                                <div style="background: #e0e0e0; border-radius: 10px; height: 20px;">
+                                    <div id="progressBar" style="background: #0066FF; width: 0%; height: 20px; border-radius: 10px; color: white; text-align: center; font-size: 12px; line-height: 20px;">0%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Image Previews -->
+                            <div id="imagePreviews" class="image-preview-container"></div>
+                            
+                            <div class="or-divider">
+                                <span>OR Add Image URLs</span>
+                            </div>
+                            
+                            <div id="imageUrls">
+                                <div class="image-url-input">
+                                    <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
+                                    <button type="button" class="btn-sm btn-success" onclick="addImageUrlField()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- AMAZON LINK -->
+                        <div class="form-group">
+                            <label for="amazonLink">Your Amazon Affiliate Link *</label>
+                            <input type="url" id="amazonLink" required placeholder="https://amzn.to/47xLIz4">
                         </div>
                         
                         <div class="form-group">
                             <label for="badge">Badge (Optional)</label>
-                            <input type="text" id="badge" placeholder="e.g., Best Seller, Sale, New">
+                            <input type="text" id="badge" placeholder="Amazon's Choice, Best Seller">
                         </div>
                         
                         <div class="form-group">
                             <label for="rating">Rating (0-5)</label>
-                            <input type="number" id="rating" step="0.1" min="0" max="5" value="4.5">
+                            <input type="number" id="rating" step="0.1" min="0" max="5" value="4.6">
                         </div>
                         
                         <div class="form-group">
@@ -498,29 +629,16 @@
                             <textarea id="features" rows="4" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"></textarea>
                         </div>
                         
-                        <button type="submit" class="btn">Save Product</button>
+                        <button type="submit" class="btn">Save Product to Supabase</button>
                     </form>
                 </div>
             </div>
             
-            <!-- Amazon Links Section -->
-            <div id="amazon-section" class="section">
-                <h1>Amazon Affiliate Links</h1>
+            <!-- Categories Section -->
+            <div id="categories-section" class="section">
+                <h1>Manage Categories</h1>
                 <div class="card">
-                    <div class="amazon-info" style="background: #232f3e; color: white; padding: 1.5rem; border-radius: 10px;">
-                        <h3>Your Store ID: <strong>techvaultzone-20</strong></h3>
-                        <p style="margin: 15px 0;">Copy these link formats:</p>
-                        
-                        <h4>Standard Product Link:</h4>
-                        <code style="display: block; background: #1a242f; padding: 10px; margin: 10px 0; border-radius: 5px;">
-                            https://www.amazon.com/dp/PRODUCT_ID/?tag=techvaultzone-20
-                        </code>
-                        
-                        <h4>Example with iPhone 15:</h4>
-                        <code style="display: block; background: #1a242f; padding: 10px; margin: 10px 0; border-radius: 5px;">
-                            https://www.amazon.com/dp/B0CHWV2WYK/?tag=techvaultzone-20
-                        </code>
-                    </div>
+                    <p>Categories are managed in the database.</p>
                 </div>
             </div>
             
@@ -528,236 +646,397 @@
             <div id="security-section" class="section">
                 <h1>Security Settings</h1>
                 <div class="card">
-                    <h2>Your Secret Answers (Memorize These!)</h2>
-                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
-                        <p><strong>Question 1:</strong> What was your first pet's name?</p>
-                        <p><strong>Answer:</strong> <span style="color: #28a745;">✓ Set (hidden)</span></p>
-                        
-                        <p><strong>Question 2:</strong> What is your mother's maiden name?</p>
-                        <p><strong>Answer:</strong> <span style="color: #28a745;">✓ Set (hidden)</span></p>
-                        
-                        <p><strong>Question 3:</strong> What city were you born in?</p>
-                        <p><strong>Answer:</strong> <span style="color: #28a745;">✓ Set (hidden)</span></p>
-                    </div>
-                    
-                    <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 10px;">
-                        <h3><i class="fas fa-shield-alt"></i> Security Status</h3>
-                        <p>✅ Multi-factor authentication: ACTIVE</p>
-                        <p>✅ Device fingerprinting: ACTIVE</p>
-                        <p>✅ Brute force protection: ACTIVE</p>
-                        <p>✅ Session encryption: 256-bit</p>
-                    </div>
+                    <p>Session expires in: <span id="sessionTimer">30:00</span></p>
+                    <button class="btn btn-success" onclick="extendSession()">Extend Session</button>
                 </div>
             </div>
         </div>
     </div>
     
+    <div class="session-warning" id="sessionWarning">
+        <i class="fas fa-clock"></i> Session expires in 5 minutes
+    </div>
+
+    <!-- Supabase Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // ============================================
-        // SECURE SESSION VERIFICATION
+        // SUPABASE CONFIGURATION
         // ============================================
+        const SUPABASE_URL = 'https://eyigxuzyciytohrclugy.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5aWd4dXp5Y2l5dG9ocmNsdWd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMzA4ODgsImV4cCI6MjA4ODYwNjg4OH0.-l10eOlJR4M5SXcq-Qlo9Ga1tDJkVZkM-9VczcOhDyg';
         
-        function verifySession() {
-            const sessionToken = sessionStorage.getItem('adminSecure');
-            const deviceId = localStorage.getItem('adminDevice');
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // ============================================
+        // SECURITY CHECK
+        // ============================================
+        (function() {
+            const token = sessionStorage.getItem('adminToken');
+            const loginTime = sessionStorage.getItem('adminLoginTime');
             
-            if (!sessionToken || !deviceId) {
+            if (!token || !loginTime) {
                 window.location.href = 'login.html';
-                return false;
+                return;
             }
+        })();
+        
+        // ============================================
+        // GLOBAL VARIABLES
+        // ============================================
+        let uploadedFiles = [];
+        let imageUrlList = [];
+        let products = [];
+        
+        // ============================================
+        // SESSION MANAGEMENT
+        // ============================================
+        let sessionTimer = setInterval(() => {
+            const loginTime = parseInt(sessionStorage.getItem('adminLoginTime'));
+            const elapsed = Date.now() - loginTime;
+            const remaining = 30 * 60 * 1000 - elapsed;
             
-            try {
-                const session = JSON.parse(atob(sessionToken));
-                const now = Date.now();
-                
-                // Session expires after 8 hours
-                if (now - session.time > 8 * 60 * 60 * 1000) {
-                    sessionStorage.removeItem('adminSecure');
-                    window.location.href = 'login.html';
-                    return false;
+            if (remaining <= 0) {
+                clearInterval(sessionTimer);
+                logout();
+            } else {
+                const minutes = Math.floor(remaining / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+                const timerEl = document.getElementById('sessionTimer');
+                if (timerEl) {
+                    timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 }
                 
-                return true;
-            } catch (e) {
-                window.location.href = 'login.html';
-                return false;
+                if (remaining <= 5 * 60 * 1000) {
+                    document.getElementById('sessionWarning').classList.add('show');
+                }
             }
-        }
+        }, 1000);
         
-        // Verify on load
-        if (!verifySession()) {
-            // Redirect happening
+        function extendSession() {
+            sessionStorage.setItem('adminLoginTime', Date.now());
         }
         
         // ============================================
-        // PRODUCT MANAGEMENT
+        // UI FUNCTIONS
         // ============================================
-        
-        let products = JSON.parse(localStorage.getItem('products') || '[]');
-        
         function showSection(section) {
             document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
             document.querySelector(`.sidebar a[onclick="showSection('${section}')"]`).classList.add('active');
             document.getElementById(section + '-section').classList.add('active');
             
-            if (section === 'dashboard') updateDashboard();
-            if (section === 'products') displayProducts();
+            if (section === 'products') loadProducts();
+            if (section === 'dashboard') loadProducts();
         }
         
-        function updateDashboard() {
-            document.getElementById('totalProducts').textContent = products.length;
+        // ============================================
+        // SUPABASE IMAGE UPLOAD
+        // ============================================
+        async function uploadImageToSupabase(file) {
+            const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '-')}`;
+            
+            const { data, error } = await supabase.storage
+                .from('product-images')
+                .upload(fileName, file);
+            
+            if (error) throw error;
+            
+            const { data: { publicUrl } } = supabase.storage
+                .from('product-images')
+                .getPublicUrl(fileName);
+            
+            return publicUrl;
+        }
+        
+        async function handleImageUpload(input) {
+            const files = Array.from(input.files);
+            uploadedFiles = files;
+            
+            // Show previews
+            const previewContainer = document.getElementById('imagePreviews');
+            previewContainer.innerHTML = '';
+            
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'image-preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <div class="remove-image" onclick="removeFile(${index})">×</div>
+                    `;
+                    previewContainer.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            displayImagePreviews();
+        }
+        
+        function displayImagePreviews() {
+            const previewContainer = document.getElementById('imagePreviews');
+            previewContainer.innerHTML = '';
+            
+            uploadedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'image-preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <div class="remove-image" onclick="removeFile(${index})">×</div>
+                    `;
+                    previewContainer.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            imageUrlList.forEach((url, index) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'image-preview-item';
+                previewItem.innerHTML = `
+                    <img src="${url}" alt="URL Image">
+                    <div class="remove-image" onclick="removeUrl(${index})">×</div>
+                `;
+                previewContainer.appendChild(previewItem);
+            });
+        }
+        
+        function removeUrl(index) {
+            imageUrlList.splice(index, 1);
+            displayImagePreviews();
+        }
+        
+        function addImageUrlField() {
+            const container = document.getElementById('imageUrls');
+            const newInput = document.createElement('div');
+            newInput.className = 'image-url-input';
+            newInput.innerHTML = `
+                <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
+                <button type="button" class="btn-sm btn-danger" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(newInput);
+        }
+        
+        function collectImageUrls() {
+            const urls = [];
+            document.querySelectorAll('.imageUrlInput').forEach(input => {
+                if (input.value.trim()) {
+                    urls.push(input.value.trim());
+                }
+            });
+            return urls;
+        }
+        
+        // ============================================
+        // PRODUCT FUNCTIONS
+        // ============================================
+        async function loadProducts() {
+            try {
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                products = data || [];
+                displayProducts();
+                updateDashboard();
+                updateCategoryCounts();
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('productsList').innerHTML = '<tr><td colspan="7" style="text-align: center;">Error loading products</td></tr>';
+            }
         }
         
         function displayProducts() {
             const list = document.getElementById('productsList');
+            
             if (products.length === 0) {
-                list.innerHTML = '<tr><td colspan="5" style="text-align: center;">No products yet. Add your first product!</td></tr>';
+                list.innerHTML = '<tr><td colspan="7" style="text-align: center;">No products yet</td></tr>';
                 return;
             }
             
-            list.innerHTML = products.map((p, index) => `
+            list.innerHTML = products.map(p => `
                 <tr>
-                    <td><img src="${p.image}" class="product-image" onerror="this.src='https://via.placeholder.com/50'"></td>
+                    <td><img src="${p.image_urls?.[0] || p.image_url || 'https://via.placeholder.com/50'}" class="product-image"></td>
                     <td>${p.title}</td>
-                    <td>${p.amazonId}</td>
+                    <td>${p.category}</td>
                     <td>$${p.price}</td>
+                    <td>${p.image_urls?.length || 1}</td>
                     <td>
-                        <button class="btn-sm btn-edit" onclick="editProduct(${index})">Edit</button>
-                        <button class="btn-sm btn-delete" onclick="deleteProduct(${index})">Delete</button>
+                        <a href="${p.amazon_link}" target="_blank" class="btn-sm btn-amazon">Link</a>
+                    </td>
+                    <td>
+                        <button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
                     </td>
                 </tr>
             `).join('');
         }
         
-        // ============================================
-        // IMAGE UPLOAD HANDLING
-        // ============================================
-        
-        let currentImageData = null;
-        
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.upload-tab, .url-tab').forEach(t => t.classList.remove('active'));
+        function updateDashboard() {
+            document.getElementById('totalProducts').textContent = products.length;
             
-            if (tab === 'upload') {
-                document.querySelector('.tab-btn:first-child').classList.add('active');
-                document.getElementById('upload-tab').classList.add('active');
-            } else {
-                document.querySelector('.tab-btn:last-child').classList.add('active');
-                document.getElementById('url-tab').classList.add('active');
-            }
-        }
-        
-        function previewImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').style.display = 'block';
-                    document.getElementById('dropArea').style.display = 'none';
-                    currentImageData = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        
-        function clearImage() {
-            document.getElementById('imagePreview').style.display = 'none';
-            document.getElementById('dropArea').style.display = 'block';
-            document.getElementById('fileInput').value = '';
-            currentImageData = null;
-        }
-        
-        // Drag and drop handlers
-        const dropArea = document.getElementById('dropArea');
-        
-        dropArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropArea.style.background = '#e3f2fd';
-        });
-        
-        dropArea.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            dropArea.style.background = '';
-        });
-        
-        dropArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropArea.style.background = '';
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                document.getElementById('fileInput').files = files;
-                previewImage(document.getElementById('fileInput'));
-            }
-        });
-        
-        // ============================================
-        // SAVE PRODUCT
-        // ============================================
-        
-        document.getElementById('productForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Get image (either uploaded or URL)
-            let imageUrl = document.getElementById('imageUrl').value;
-            if (currentImageData) {
-                imageUrl = currentImageData;
-            }
-            
-            if (!imageUrl) {
-                alert('Please add an image (upload or URL)');
+            const recentList = document.getElementById('recentProductsList');
+            if (products.length === 0) {
+                recentList.innerHTML = '<tr><td colspan="5" style="text-align: center;">No products yet</td></tr>';
                 return;
             }
             
-            const features = document.getElementById('features').value.split('\n').filter(f => f.trim());
+            const recent = products.slice(0, 5);
+            recentList.innerHTML = recent.map(p => `
+                <tr>
+                    <td><img src="${p.image_urls?.[0] || p.image_url}" class="product-image"></td>
+                    <td>${p.title}</td>
+                    <td>$${p.price}</td>
+                    <td><a href="${p.amazon_link}" target="_blank" class="btn-sm btn-amazon">View</a></td>
+                    <td><button class="btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button></td>
+                </tr>
+            `).join('');
+        }
+        
+        function updateCategoryCounts() {
+            const counts = {};
+            products.forEach(p => {
+                counts[p.category] = (counts[p.category] || 0) + 1;
+            });
             
-            const product = {
-                id: Date.now(),
-                title: document.getElementById('title').value,
-                category: document.getElementById('category').value,
-                description: document.getElementById('description').value,
-                price: parseFloat(document.getElementById('price').value),
-                salePrice: document.getElementById('salePrice').value || null,
-                image: imageUrl,
-                amazonId: document.getElementById('amazonId').value,
-                badge: document.getElementById('badge').value || null,
-                rating: parseFloat(document.getElementById('rating').value),
-                features: features,
-                amazonLink: `https://www.amazon.com/dp/${document.getElementById('amazonId').value}/?tag=techvaultzone-20`
-            };
+            document.querySelectorAll('[id^="count-"]').forEach(el => {
+                const cat = el.id.replace('count-', '');
+                el.textContent = counts[cat] || 0;
+            });
+        }
+        
+        // ============================================
+        // SAVE PRODUCT TO SUPABASE
+        // ============================================
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            products.push(product);
-            localStorage.setItem('products', JSON.stringify(products));
+            const saveBtn = this.querySelector('button[type="submit"]');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = 'Uploading to Supabase...';
+            saveBtn.disabled = true;
             
-            alert('Product added successfully!');
-            e.target.reset();
-            clearImage();
-            showSection('products');
-            displayProducts();
-            updateDashboard();
+            try {
+                // Upload images to Supabase
+                const imageUrls = [...collectImageUrls()];
+                
+                if (uploadedFiles.length > 0) {
+                    for (let file of uploadedFiles) {
+                        const url = await uploadImageToSupabase(file);
+                        if (url) imageUrls.push(url);
+                    }
+                }
+                
+                if (imageUrls.length === 0) {
+                    imageUrls.push('https://via.placeholder.com/300');
+                }
+                
+                // Create slug
+                const title = document.getElementById('title').value;
+                const slug = title.toLowerCase()
+                    .replace(/[^\w\s]/g, '')
+                    .replace(/\s+/g, '-');
+                
+                // Features
+                const features = document.getElementById('features').value
+                    .split('\n')
+                    .filter(f => f.trim());
+                
+                // Product object
+                const product = {
+                    title: title,
+                    slug: slug,
+                    category: document.getElementById('category').value,
+                    description: document.getElementById('description').value,
+                    price: parseFloat(document.getElementById('price').value),
+                    sale_price: document.getElementById('salePrice').value ? parseFloat(document.getElementById('salePrice').value) : null,
+                    image_url: imageUrls[0],
+                    image_urls: imageUrls,
+                    amazon_link: document.getElementById('amazonLink').value,
+                    badge: document.getElementById('badge').value || null,
+                    rating: parseFloat(document.getElementById('rating').value),
+                    features: features,
+                    review_count: 0
+                };
+                
+                // Save to Supabase
+                const { data, error } = await supabase
+                    .from('products')
+                    .insert([product])
+                    .select();
+                
+                if (error) throw error;
+                
+                alert('Product saved to Supabase successfully!');
+                
+                // Reset form
+                this.reset();
+                uploadedFiles = [];
+                imageUrlList = [];
+                document.getElementById('imagePreviews').innerHTML = '';
+                document.getElementById('imageUrls').innerHTML = `
+                    <div class="image-url-input">
+                        <input type="url" class="imageUrlInput" placeholder="https://m.media-amazon.com/images/...">
+                        <button type="button" class="btn-sm btn-success" onclick="addImageUrlField()">+</button>
+                    </div>
+                `;
+                
+                showSection('products');
+                await loadProducts();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error saving to Supabase: ' + error.message);
+            } finally {
+                saveBtn.textContent = originalText;
+                saveBtn.disabled = false;
+            }
         });
         
-        function deleteProduct(index) {
-            if (confirm('Delete this product?')) {
-                products.splice(index, 1);
-                localStorage.setItem('products', JSON.stringify(products));
-                displayProducts();
-                updateDashboard();
+        // ============================================
+        // DELETE PRODUCT
+        // ============================================
+        async function deleteProduct(id) {
+            if (!confirm('Delete this product?')) return;
+            
+            try {
+                const { error } = await supabase
+                    .from('products')
+                    .delete()
+                    .eq('id', id);
+                
+                if (error) throw error;
+                
+                await loadProducts();
+                alert('Product deleted');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error deleting product');
             }
         }
         
         // ============================================
-        // SECURE LOGOUT
+        // LOGOUT
         // ============================================
-        
-        function secureLogout() {
-            sessionStorage.removeItem('adminSecure');
-            localStorage.removeItem('adminDevice');
+        function logout() {
+            sessionStorage.clear();
             window.location.href = 'login.html';
         }
         
-        updateDashboard();
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+        });
     </script>
 </body>
 </html>

@@ -17,7 +17,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0066FF, #00C3FF);
+            background: linear-gradient(135deg, #0A0A0A, #0066FF);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -28,23 +28,14 @@
         .login-container {
             width: 100%;
             max-width: 450px;
-            perspective: 1000px;
         }
         
         .login-box {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             animation: slideUp 0.5s ease;
-            border: 2px solid rgba(255,255,255,0.2);
-            transform-style: preserve-3d;
-            transition: transform 0.3s;
-        }
-        
-        .login-box:hover {
-            transform: translateY(-5px) rotateX(2deg);
         }
         
         .logo {
@@ -53,9 +44,8 @@
         }
         
         .logo i {
-            font-size: 4rem;
+            font-size: 3rem;
             color: #0066FF;
-            filter: drop-shadow(0 10px 20px rgba(0,102,255,0.3));
             animation: pulse 2s infinite;
         }
         
@@ -65,17 +55,43 @@
         }
         
         .logo h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-top: 0.5rem;
-            background: linear-gradient(135deg, #0066FF, #00C3FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #333;
         }
         
-        .logo p {
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            background: #ddd;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .step-dot.active {
+            background: #0066FF;
+            transform: scale(1.3);
         }
         
         .form-group {
@@ -85,140 +101,82 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 600;
-            font-size: 0.9rem;
+            color: #555;
+            font-weight: 500;
         }
         
         .form-group input {
             width: 100%;
-            padding: 0.9rem 1rem;
+            padding: 0.75rem 1rem;
             border: 2px solid #e1e1e1;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 1rem;
             transition: all 0.3s;
-            background: white;
         }
         
         .form-group input:focus {
             outline: none;
             border-color: #0066FF;
-            box-shadow: 0 0 0 4px rgba(0,102,255,0.1);
-        }
-        
-        .secret-question {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #0066FF;
-        }
-        
-        .secret-question h3 {
-            color: #333;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-        
-        .question-item {
-            margin-bottom: 1rem;
-        }
-        
-        .question-item label {
-            display: block;
-            margin-bottom: 0.3rem;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .security-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #28a745;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-bottom: 1rem;
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
         }
         
         .btn {
             width: 100%;
-            padding: 1rem;
+            padding: 0.875rem;
             background: linear-gradient(135deg, #0066FF, #00C3FF);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
+            margin-top: 1rem;
         }
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(0,102,255,0.4);
+            box-shadow: 0 10px 20px rgba(0,102,255,0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            margin-top: 0.5rem;
         }
         
         .error {
             color: #dc3545;
             text-align: center;
             margin-top: 1rem;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             padding: 0.5rem;
             background: #f8d7da;
             border-radius: 5px;
             display: none;
         }
         
-        .security-footer {
-            margin-top: 1.5rem;
+        .error.show {
+            display: block;
+        }
+        
+        .attempts {
             text-align: center;
-            font-size: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.75rem;
             color: #999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
         }
         
-        .security-footer i {
-            color: #28a745;
+        .warning {
+            color: #856404;
+            background: #fff3cd;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            text-align: center;
         }
         
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .device-fingerprint {
+        .hidden {
             display: none;
         }
     </style>
@@ -228,166 +186,219 @@
         <div class="login-box">
             <div class="logo">
                 <i class="fas fa-shield-alt"></i>
-                <h1>Secure Admin Access</h1>
-                <p>Multi-layer authentication</p>
+                <h1>TechVaultZone Admin</h1>
+                <p>Secure Access Portal</p>
             </div>
             
-            <div class="security-badge">
-                <i class="fas fa-check-circle"></i>
-                <span>Level 3 Security Active</span>
+            <div class="step-indicator">
+                <div class="step-dot active" id="step1Dot"></div>
+                <div class="step-dot" id="step2Dot"></div>
+                <div class="step-dot" id="step3Dot"></div>
+                <div class="step-dot" id="step4Dot"></div>
             </div>
             
-            <form id="loginForm">
+            <!-- STEP 1: Username & Password -->
+            <div class="step active" id="step1">
+                <div class="warning">
+                    <i class="fas fa-lock"></i> Authorized Personnel Only
+                </div>
+                
+                <form id="step1Form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Enter username" autofocus>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter password">
+                    </div>
+                    
+                    <button type="submit" class="btn">Continue <i class="fas fa-arrow-right"></i></button>
+                </form>
+            </div>
+            
+            <!-- STEP 2: Security Question 1 -->
+            <div class="step" id="step2">
                 <div class="form-group">
-                    <label><i class="fas fa-user-secret"></i> Admin Username</label>
-                    <input type="text" id="username" placeholder="Enter username" value="admin" required>
+                    <label>Question 1: What is your favorite city?</label>
+                    <input type="text" id="answer1" placeholder="Your answer">
                 </div>
                 
-                <div class="secret-question">
-                    <h3><i class="fas fa-question-circle"></i> Security Questions (Only you know these)</h3>
-                    
-                    <div class="question-item">
-                        <label>Question 1: What was your first pet's name?</label>
-                        <input type="text" id="petName" placeholder="Enter answer" value="pakistan" required>
-                    </div>
-                    
-                    <div class="question-item">
-                        <label>Question 2: What is your mother's maiden name?</label>
-                        <input type="text" id="maidenName" placeholder="Enter answer" value="pakistan" required>
-                    </div>
-                    
-                    <div class="question-item">
-                        <label>Question 3: What city were you born in?</label>
-                        <input type="text" id="birthCity" placeholder="Enter answer" value="pakistan" required>
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn" id="loginBtn">
-                    <i class="fas fa-lock"></i> Verify & Login
-                </button>
-                
-                <div id="error" class="error"></div>
-            </form>
-            
-            <div class="security-footer">
-                <i class="fas fa-shield-alt"></i>
-                <span>End-to-end encrypted • 256-bit security</span>
+                <button class="btn" onclick="checkAnswer1()">Continue <i class="fas fa-arrow-right"></i></button>
+                <button class="btn btn-secondary" onclick="goToStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
             </div>
+            
+            <!-- STEP 3: Security Question 2 -->
+            <div class="step" id="step3">
+                <div class="form-group">
+                    <label>Question 2: What is your favorite food?</label>
+                    <input type="text" id="answer2" placeholder="Your answer">
+                </div>
+                
+                <button class="btn" onclick="checkAnswer2()">Continue <i class="fas fa-arrow-right"></i></button>
+                <button class="btn btn-secondary" onclick="goToStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+            
+            <!-- STEP 4: Security Question 3 -->
+            <div class="step" id="step4">
+                <div class="form-group">
+                    <label>Question 3: What is your favorite hobby?</label>
+                    <input type="text" id="answer3" placeholder="Your answer">
+                </div>
+                
+                <button class="btn" onclick="checkAnswer3()">Login <i class="fas fa-sign-in-alt"></i></button>
+                <button class="btn btn-secondary" onclick="goToStep(3)"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+            
+            <div class="error" id="errorMessage"></div>
+            <div class="attempts" id="attemptCount">Attempts remaining: 5</div>
         </div>
     </div>
-    
+
     <script>
         // ============================================
-        // ULTRA SECURE ADMIN AUTHENTICATION
-        // YOUR ANSWERS ARE SET TO: pakistan
+        // ULTRA SECURE ADMIN LOGIN
+        // ALL ANSWERS = "pakistan" (YOU MUST REMEMBER)
         // ============================================
         
-        // YOUR SECRET ANSWERS - ALL SET TO "pakistan"
         const SECRETS = {
-            username: 'admin',           // Admin username
-            petName: 'pakistan',          // Your first pet's name
-            maidenName: 'pakistan',        // Your mother's maiden name  
-            birthCity: 'pakistan',          // Your birth city
-            
-            // Device fingerprinting
-            get deviceFingerprint() {
-                return this.generateFingerprint();
-            },
-            
-            generateFingerprint() {
-                const screen = `${screen.width}x${screen.height}`;
-                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                const language = navigator.language;
-                return btoa(screen + timezone + language).substring(0, 20);
-            }
+            username: 'admin',
+            password: 'pakistan',
+            answer1: 'pakistan',
+            answer2: 'pakistan', 
+            answer3: 'pakistan'
         };
         
-        // Track login attempts
-        let attempts = 0;
-        let lockUntil = 0;
+        let currentStep = 1;
+        let attempts = 5;
+        let lockedUntil = null;
         
-        // Generate device fingerprint
-        const deviceId = SECRETS.generateFingerprint();
-        console.log('Device registered:', deviceId.substring(0, 10) + '...');
+        function isLocked() {
+            if (lockedUntil && new Date() < lockedUntil) {
+                const waitTime = Math.ceil((lockedUntil - new Date()) / 1000);
+                showError(`Too many attempts. Locked for ${waitTime} seconds.`);
+                return true;
+            }
+            return false;
+        }
         
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        function failedAttempt() {
+            attempts--;
+            document.getElementById('attemptCount').textContent = `Attempts remaining: ${attempts}`;
+            
+            if (attempts <= 0) {
+                lockedUntil = new Date(Date.now() + 15 * 60 * 1000);
+                showError('Too many failed attempts. Locked for 15 minutes.');
+                disableAllInputs();
+            }
+        }
+        
+        function resetAttempts() {
+            attempts = 5;
+            lockedUntil = null;
+            document.getElementById('attemptCount').textContent = `Attempts remaining: ${attempts}`;
+        }
+        
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+            
+            setTimeout(() => {
+                errorEl.classList.remove('show');
+            }, 3000);
+        }
+        
+        function goToStep(step) {
+            if (isLocked()) return;
+            
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            document.querySelectorAll('.step-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index < step);
+            });
+            
+            currentStep = step;
+        }
+        
+        document.getElementById('step1Form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const errorDiv = document.getElementById('error');
-            const now = Date.now();
+            if (isLocked()) return;
             
-            // Check if account is locked
-            if (now < lockUntil) {
-                const waitSeconds = Math.ceil((lockUntil - now) / 1000);
-                errorDiv.style.display = 'block';
-                errorDiv.textContent = `Too many attempts. Try again in ${waitSeconds} seconds.`;
-                return;
-            }
-            
-            // Get user input (convert to lowercase for case-insensitive matching)
             const username = document.getElementById('username').value.toLowerCase().trim();
-            const petName = document.getElementById('petName').value.toLowerCase().trim();
-            const maidenName = document.getElementById('maidenName').value.toLowerCase().trim();
-            const birthCity = document.getElementById('birthCity').value.toLowerCase().trim();
+            const password = document.getElementById('password').value.toLowerCase().trim();
             
-            // VERIFY ANSWERS - ALL SHOULD BE "pakistan"
-            const isValid = 
-                username === SECRETS.username &&
-                petName === SECRETS.petName &&
-                maidenName === SECRETS.maidenName &&
-                birthCity === SECRETS.birthCity;
-            
-            if (isValid) {
-                // Success - store encrypted session
-                const sessionToken = btoa(JSON.stringify({
-                    user: username,
-                    device: deviceId,
-                    time: Date.now(),
-                    valid: true
-                }));
-                
-                sessionStorage.setItem('adminSecure', sessionToken);
-                localStorage.setItem('adminDevice', deviceId);
-                
-                // Reset attempts
-                attempts = 0;
-                
-                // Redirect to dashboard
-                window.location.href = 'dashboard.html';
-                
+            if (username === SECRETS.username && password === SECRETS.password) {
+                goToStep(2);
             } else {
-                // Failed attempt
-                attempts++;
-                errorDiv.style.display = 'block';
-                
-                // Show what they entered (for debugging - remove in production)
-                console.log('Failed attempt:', {username, petName, maidenName, birthCity});
-                
-                // Progressive lockout
-                if (attempts >= 5) {
-                    lockUntil = Date.now() + (30 * 60 * 1000); // Lock 30 minutes
-                    errorDiv.textContent = 'ACCOUNT LOCKED! Too many failed attempts. Try again in 30 minutes.';
-                } else if (attempts >= 3) {
-                    lockUntil = Date.now() + (5 * 60 * 1000); // Lock 5 minutes
-                    errorDiv.textContent = `Too many attempts. Locked for 5 minutes. (Attempt ${attempts}/5)`;
-                } else {
-                    errorDiv.textContent = `Invalid credentials. Attempt ${attempts}/5`;
-                }
+                failedAttempt();
+                showError('Invalid username or password');
             }
         });
         
-        // Additional security - prevent brute force
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if this device is authorized
-            const lastDevice = localStorage.getItem('adminDevice');
-            if (lastDevice && lastDevice !== deviceId) {
-                console.warn('⚠️ Unauthorized device detected!');
-                // You can add email notification here
-            }
+        function checkAnswer1() {
+            if (isLocked()) return;
             
-            // Auto-focus first field
-            document.getElementById('username').focus();
-        });
+            const answer = document.getElementById('answer1').value.toLowerCase().trim();
+            
+            if (answer === SECRETS.answer1) {
+                goToStep(3);
+            } else {
+                failedAttempt();
+                showError('Incorrect answer');
+            }
+        }
+        
+        function checkAnswer2() {
+            if (isLocked()) return;
+            
+            const answer = document.getElementById('answer2').value.toLowerCase().trim();
+            
+            if (answer === SECRETS.answer2) {
+                goToStep(4);
+            } else {
+                failedAttempt();
+                showError('Incorrect answer');
+            }
+        }
+        
+        function checkAnswer3() {
+            if (isLocked()) return;
+            
+            const answer = document.getElementById('answer3').value.toLowerCase().trim();
+            
+            if (answer === SECRETS.answer3) {
+                resetAttempts();
+                
+                const sessionToken = btoa(Date.now() + 'admin' + Math.random());
+                sessionStorage.setItem('adminToken', sessionToken);
+                sessionStorage.setItem('adminLoginTime', Date.now());
+                
+                window.location.href = 'index.html';
+            } else {
+                failedAttempt();
+                showError('Incorrect answer');
+            }
+        }
+        
+        function disableAllInputs() {
+            document.querySelectorAll('input, button').forEach(el => {
+                el.disabled = true;
+            });
+        }
+        
+        if (sessionStorage.getItem('adminToken')) {
+            const loginTime = sessionStorage.getItem('adminLoginTime');
+            if (loginTime && (Date.now() - loginTime < 30 * 60 * 1000)) {
+                window.location.href = 'index.html';
+            } else {
+                sessionStorage.removeItem('adminToken');
+                sessionStorage.removeItem('adminLoginTime');
+            }
+        }
     </script>
 </body>
 </html>
